@@ -389,26 +389,37 @@ public class PriorityBasedCompositeBehaviour extends CompositeBehaviour {
      * @param newPriority The new priority of the behaviour. If it less than
      * 0 then uses 0.
      * @param changeNow True if the change must be reflected inmediately,
-     * that is, the current priority is reset to the new priority.
+     * that is, the current priority is reset to the new priority, or False
+     * if this change takes effect after the execution of the behaviour.
      */
     public void changePriority(PriorityBehaviour pb, int newPriority, boolean changeNow) {
-        // Remember. Priorities are greater or equal than 0.
-        if (newPriority < 0)
-            newPriority = 0;
         pb.setPriority(newPriority);
-        if (changeNow)
-            // If this is not the highest priority behaviour, simply resets
+        if (changeNow) {
+            // If this is not the highest priority behaviour, resets
             // its current priority.
-            if (pb.getCurrentPriority() > maxPriority)
+            if (pb.getCurrentPriority() > maxPriority) {
                 pb.resetCurrentPriority();
+                // Checks if now this is the highest priority behaviuor.
+                if (pb.getCurrentPriority() < maxPriority)
+                    maxPriority = pb.getCurrentPriority();
+            }
             else
             {
                 // This is the highest priority behaviour, and we change its
                 // priority. So perhaps there is a new highest priority behaviour.
                 pb.resetCurrentPriority();
-                PriorityBehaviour mpb = allBehaviours.searchMaxPriorityBehaviour();
-                if (mpb != null)
-                    maxPriority = mpb.getCurrentPriority();
+                if (pb.getCurrentPriority() < maxPriority)
+                    maxPriority = pb.getCurrentPriority();
+                else {
+                    PriorityBehaviour mpb = allBehaviours.searchMaxPriorityBehaviour();
+                    if (mpb != null)
+                        maxPriority = mpb.getCurrentPriority();
+                }
             }
+            // If this change makes the behaviour reach priority 0, then it is
+            // ready to be executed.
+            if ((pb.getCurrentPriority() == 0) && (!(readyBehaviours.contains(pb))))
+                readyBehaviours.addElement(pb);
+        }
     }
 }

@@ -103,7 +103,7 @@ class PriorityBehaviourList extends LinkedList implements Serializable {
     /**
      * Searches this list for the behaviour with the current highest priority,
      * but considering only the behaviours which its current priority number is
-     * greater or equal than a limit.
+     * as higher as the limit.
      * @param limit The limit for the priority.
      * @return The behaviour found, or null if none is found.
      */
