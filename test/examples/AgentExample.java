@@ -34,6 +34,12 @@ package examples;
 
 import jade.core.Agent;
 
+/**
+ * A dummy stub agent used by the unit tests.
+ * 
+ * @author Juan A. Suárez Romero - University of A Coruña
+ * @version $Date$ $Revision$
+ */
 public class AgentExample extends Agent {
     private static final long serialVersionUID = 8810980115423010660L;
 

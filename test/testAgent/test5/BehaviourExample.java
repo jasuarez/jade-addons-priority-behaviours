@@ -29,31 +29,35 @@
  $Id$
  *****************************************************************/
 
-package examples;
+package testAgent.test5;
 import jade.core.Agent;
-import jade.core.behaviours.PriorityBehaviour;
+import jade.core.behaviours.Behaviour;
 
-public class PriorityBehaviourExample extends PriorityBehaviour {
-    private static final long serialVersionUID = -3134519462636770274L;
-    private int counter = 10;
+public class BehaviourExample extends Behaviour {
+    private static final long serialVersionUID = 8052921726286633878L;
+    private int counter = 3;
+    private int id;
     
-    public PriorityBehaviourExample() {
+    public BehaviourExample() {
         super();
     }
     
-    public PriorityBehaviourExample(int priority) {
-        super(priority);
+    public BehaviourExample(int id) {
+        super();
+        this.id = id;
     }
 
-    public PriorityBehaviourExample(Agent a) {
+    public BehaviourExample(Agent a) {
        super(a);
     }
     
-    public PriorityBehaviourExample(Agent a, int priority) {
-        super(a, priority);
+    public BehaviourExample(Agent a, int id) {
+        super(a);
+        this.id = id;
      }
 
     public void action() {
+        System.out.print(id+"-");
         counter--;
     }
     

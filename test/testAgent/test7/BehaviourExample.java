@@ -29,43 +29,43 @@
  $Id$
  *****************************************************************/
 
-package test.jade.core.behaviours.test1;
-
+package testAgent.test7;
 import jade.core.Agent;
-import jade.core.behaviours.PriorityBehaviour;
+import jade.core.behaviours.Behaviour;
 
-/**
- * Vamos a crear un comportamiento circular pero con prioridad. Le pondremos un
- * nombre y veremos cómo lo va ejecutando el scheduler. Para ello definiremos
- * diferentes instancias de la clase con diferentes prioridades.
- */
-public class ImprimirSubBehaviour extends PriorityBehaviour {
-    private static final long serialVersionUID = 1L;
-
-    String miNombre;
-
-    // El número de veces que se ejecuta este behaviour.
-    int iteracion = 0;
-
-    public ImprimirSubBehaviour(Agent ag, String nombre, int prioridad) {
-        super(ag, prioridad);
-        miNombre = nombre;
+public class BehaviourExample extends Behaviour {
+    private static final long serialVersionUID = 8052921726286633878L;
+    private int counter = 3;
+    private int id;
+    
+    public BehaviourExample() {
+        super();
+    }
+    
+    public BehaviourExample(int id) {
+        super();
+        this.id = id;
     }
 
+    public BehaviourExample(Agent a) {
+       super(a);
+    }
+    
+    public BehaviourExample(Agent a, int id) {
+        super(a);
+        this.id = id;
+     }
+
     public void action() {
-        iteracion++;
-        System.out.println("<Comportamiento " + miNombre + this.getPriority()
-                + " >  Iteracion " + iteracion);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        System.out.print(id+"-");
+        counter--;
+    }
+    
+    public int getCounter() {
+        return counter;
     }
 
     public boolean done() {
-        // TODO Auto-generated method stub
-        return false;
+        return counter==0;
     }
 }

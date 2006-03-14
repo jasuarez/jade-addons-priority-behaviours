@@ -29,31 +29,43 @@
  $Id$
  *****************************************************************/
 
-package testAgent.test5;
-
+package testAgent.test8;
 import jade.core.Agent;
-import jade.core.behaviours.ParallelPriorityBehaviour;
+import jade.core.behaviours.Behaviour;
 
-public class TestAgent extends Agent {
-
-    private static final long serialVersionUID = 202065874077575369L;
-
-    public TestAgent() {
+public class BehaviourExample extends Behaviour {
+    private static final long serialVersionUID = 8052921726286633878L;
+    private int counter = 3;
+    private int id;
+    
+    public BehaviourExample() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
-    protected void setup() {
-        printExpected();
-        ParallelPriorityBehaviour ppb = new ParallelPriorityBehaviour(this);
-        ppb.addSubBehaviour(new BehaviourExample(1), 3);
-        ppb.addSubBehaviour(new BehaviourExample(2), 2);
-        ppb.addSubBehaviour(new BehaviourExampleChange(3), 4);
-        addBehaviour(ppb);
+    public BehaviourExample(int id) {
+        super();
+        this.id = id;
+    }
+
+    public BehaviourExample(Agent a) {
+       super(a);
     }
     
-    private void printExpected() {
-        System.out.println("EXPECTED: 2-1-2-3-3-3-1-2-1-");
-        System.out.print("ACTUAL..: ");
+    public BehaviourExample(Agent a, int id) {
+        super(a);
+        this.id = id;
+     }
+
+    public void action() {
+        System.out.print(id+"-");
+        counter--;
+    }
+    
+    public int getCounter() {
+        return counter;
+    }
+
+    public boolean done() {
+        return counter==0;
     }
 }

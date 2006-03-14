@@ -32,192 +32,128 @@
 package jade.core.behaviours;
 
 import jade.core.Agent;
+import jade.util.leap.Serializable;
 
 /**
- * A special <code>PriorityBehaviour</code> which acts as a wrapper for
- * a <code>Behaviour</code> in order to add priorities to it.
+ * A special class which acts as a wrapper for a <code>Behaviour</code> in
+ * order to add priorities to it.
+ * 
+ * The priority of a behaviour is represented by a number greater or equal
+ * than 0. The lesser this number is, the higher is the priority of the
+ * behaviour. So a behaviour with a priority 1 has more priority than a
+ * behaviour with priority 2; and the last has twice priority than a behaviour
+ * with priority 4.
  * 
  * @author Juan A. Suárez Romero - University of A Coruña
  * @version $Revision$
  */
-public class EncapsulatedPriorityBehaviour extends PriorityBehaviour {
+class EncapsulatedPriorityBehaviour implements Serializable {
     private static final long serialVersionUID = 548619304232112354L;
+
+    /**
+     * The encapsulated behaviour. 
+     */
     private Behaviour encapsulatedBehaviour;
 
     /**
-     * Encapsulates a behaviour with the default priority. Also it does not
-     * set the agent owning this behaviour object.
-     * @param b The behaviour to be encapsulated.
-     * @see PriorityBehaviour.DEFAULT_PRIORITY;
+     * The priority of the behaviour.
      */
-    public EncapsulatedPriorityBehaviour(Behaviour b) {
-        super();
-        encapsulatedBehaviour = b;
-    }
+    private int defaultPriority;
+
+    /**
+     * The current priority of the behaviour. This priority is initialized to
+     * <code>defaultPriority</code> and is incremented in order to avoid the
+     * starvation of the current behaviour.
+     */
+    private int currentPriority;
 
     /**
      * Encapsulates a behaviour. It does not set the agent owning this behaviour
      * object.
-     * @param b The behaviour to be encapsulated.
-     * @param priority The priority of this behaviour object.
+     * 
+     * @param b
+     *            The behaviour to be encapsulated.
+     * @param priority
+     *            The priority of this behaviour object.
      */
     public EncapsulatedPriorityBehaviour(Behaviour b, int priority) {
-        super(priority);
+        super();
+        if (priority < 0)
+            defaultPriority = 0;
+        else
+            defaultPriority = priority;
+        currentPriority = defaultPriority;
         encapsulatedBehaviour = b;
     }
 
-    /**
-     * Encapsulates a behaviour with the default priority and an owner agent.
-     * @param b The behaviour to be encapsulated.
-     * @param a The agent owning this behaviour.
-     * @see PriorityBehaviour.DEFAULT_PRIORITY;
-     */
-    public EncapsulatedPriorityBehaviour(Behaviour b, Agent a) {
-        super(a);
-        encapsulatedBehaviour =  b;
-    }
-
-    /**
-     * Encapsulates a behaviour with a priority and an owner agent.
-     * @param b The behaviour to be encapsulated.
-     * @param a The agent owning this behaviour.
-     * @param priority The priority of this behaviour object.
-     */
-    public EncapsulatedPriorityBehaviour(Behaviour b, Agent a, int priority) {
-        super(a, priority);
-        encapsulatedBehaviour = b;
-    }
-
-    /**
-     * The action to be executed.
-     * @see jade.core.behaviours.Behaviour#action()
-     */
-    public void action() {
-        if (encapsulatedBehaviour.isRunnable()) {
-            encapsulatedBehaviour.action();
-            if (!encapsulatedBehaviour.isRunnable()) {
-                myEvent.init(false, NOTIFY_UP);
-                super.handle(myEvent);
-            }
-        }
-        else {
-            myEvent.init(false, NOTIFY_UP);
-            super.handle(myEvent);
-        }
-    }
-
-    /**
-     * Returns true if this behaviour is done.
-     * @see jade.core.behaviours.Behaviour#done()
-     */
-    public boolean done() {
-      return encapsulatedBehaviour.done();
-    }
-    
-    /**
-     * Method to be executed when this behaviour is done.
-     * @see jade.core.behaviours.Behaviour#onEnd()
-     */
-    public int onEnd() {
-        return encapsulatedBehaviour.onEnd();
-    }
-    
-    /**
-     * Method to be executed before starting this behaviour.
-     * @see jade.core.behaviours.Behaviour#onStart()
-     */
-    public void onStart() {
-        encapsulatedBehaviour.onStart();
-    }
-    
-    /**
-     * Restores this behaviour.
-     * @see jade.core.behaviours.Behaviour#reset()
-     */
-    public void reset() {
-        encapsulatedBehaviour.reset();
-        super.reset();
-    }
-    
-    /**
-     * Handler for the block/restart events.
-     * @see jade.core.behaviours.Behaviour#handle(jade.core.behaviours.Behaviour.RunnableChangedEvent)
-     */
-    protected void handle(RunnableChangedEvent rce) {
-        if (!rce.isUpwards()) {
-            encapsulatedBehaviour.handle(rce);
-        }
-    }
-    
-    /**
-     * Returns the root of this behaviour.
-     * @see jade.core.behaviours.Behaviour#root()
-     */
-    public Behaviour root() {
-        return encapsulatedBehaviour.root();
-    }
-    
-    /**
-     * Sets the runnable/not-runnable state.
-     * @see jade.core.behaviours.Behaviour#setRunnable(boolean)
-     */
-    void setRunnable(boolean runnable) {
-        encapsulatedBehaviour.setRunnable(runnable);
-        super.setRunnable(runnable);
-    }
-    
-    /**
-     * Returns true if this behaviour is runanble.
-     * @see jade.core.behaviours.Behaviour#isRunnable()
-     */
-    public boolean isRunnable() {
-        return encapsulatedBehaviour.isRunnable();
-    }
-    
-    /**
-     * Blocks this behaviour.
-     * @see jade.core.behaviours.Behaviour#block()
-     */
-    public void block() {
-        //encapsulatedBehaviour.block();
-        super.block();
-        
-        // Then notify downwards
-        myEvent.init(false, NOTIFY_DOWN);
-        handle(myEvent);        
-    }
-        
-    /**
-     * Makes this behaviour runnable.
-     * @see jade.core.behaviours.Behaviour#restart()
-     */
-    public void restart() {
-        encapsulatedBehaviour.restart();
-        super.restart();
-    }
-    
     /**
      * Set the agent owning this behaviour.
+     * 
      * @see jade.core.behaviours.Behaviour#setAgent(jade.core.Agent)
      */
     public void setAgent(Agent a) {
         encapsulatedBehaviour.setAgent(a);
     }
-    
+
     /**
-     * Returns the private datastore of this behaviour.
-     * @see jade.core.behaviours.Behaviour#getDataStore()
+     * Returns the encapsulated behaviour.
+     * @return
      */
-    public DataStore getDataStore() {
-        return encapsulatedBehaviour.getDataStore();
+    public Behaviour getBehaviour() {
+        return encapsulatedBehaviour;
     }
-    
+
     /**
-     * Sets a private datastore for this behaviour.
-     * @see jade.core.behaviours.Behaviour#setDataStore(jade.core.behaviours.DataStore)
+     * Returns the priority of this behaviour object.
+     * 
+     * @return The priority of this behaviour object.
      */
-    public void setDataStore(DataStore ds) {
-        encapsulatedBehaviour.setDataStore(ds);
-        super.setDataStore(ds);
+    public int getPriority() {
+        return defaultPriority;
+    }
+
+    /**
+     * Establish a new priority for this behaviour object. Note that the current
+     * priority of the behaviour is not changed at all.
+     * 
+     * @param newPriority
+     *            The new priority for this behaviour object.
+     * @see ParallelPriorityBehaviour#changePriority
+     */
+    protected void setPriority(int newPriority) {
+        if (newPriority < 0)
+            defaultPriority = 0;
+        else
+            defaultPriority = newPriority;
+    }
+
+    /**
+     * Returns the current priority of this behaviour object.
+     * 
+     * @return The current priority of this behaviour object.
+     */
+    public int getCurrentPriority() {
+        return currentPriority;
+    }
+
+    /**
+     * Increments the current priority of this behaviour object.
+     * 
+     * @param increment
+     *            The increment of the current priority, so the new current
+     *            priority is (old current priority - increment).
+     */
+    protected void incCurrentPriority(int increment) {
+        currentPriority -= increment;
+        if (currentPriority < 0)
+            currentPriority = 0;
+    }
+
+    /**
+     * Establish the current priority of this behaviour object to its normal
+     * priority.
+     */
+    protected void resetCurrentPriority() {
+        currentPriority = defaultPriority;
     }
 }

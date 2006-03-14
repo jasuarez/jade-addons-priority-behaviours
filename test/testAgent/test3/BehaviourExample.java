@@ -29,25 +29,43 @@
  $Id$
  *****************************************************************/
 
-package test.jade.core.behaviours.test1;
-
+package testAgent.test3;
 import jade.core.Agent;
-import jade.core.behaviours.PriorityBasedCompositeBehaviour;
-import jade.core.behaviours.ParallelBehaviour;
+import jade.core.behaviours.Behaviour;
 
-public class PriorityBasedAgent extends Agent {
-
-    public PriorityBasedAgent() {
+public class BehaviourExample extends Behaviour {
+    private static final long serialVersionUID = 8052921726286633878L;
+    private int counter = 3;
+    private int id;
+    
+    public BehaviourExample() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
-    protected void setup() {
-        PriorityBasedCompositeBehaviour pbb = new PriorityBasedCompositeBehaviour();
-        //ParallelBehaviour pbb = new ParallelBehaviour();
-        // Creamos un único comportamiento con prioridad por defecto.
-        pbb.addSubBehaviour(new ImprimirSubBehaviour(this, "c", PriorityBasedCompositeBehaviour.DEFAULT_PRIORITY));
-        //pbb.addSubBehaviour(new ImprimirSubBehaviour(this, "c", 0));
-        addBehaviour(pbb);
-    }   
+    public BehaviourExample(int id) {
+        super();
+        this.id = id;
+    }
+
+    public BehaviourExample(Agent a) {
+       super(a);
+    }
+    
+    public BehaviourExample(Agent a, int id) {
+        super(a);
+        this.id = id;
+     }
+
+    public void action() {
+        System.out.print(id+"-");
+        counter--;
+    }
+    
+    public int getCounter() {
+        return counter;
+    }
+
+    public boolean done() {
+        return counter==0;
+    }
 }

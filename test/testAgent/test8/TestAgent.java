@@ -29,22 +29,31 @@
  $Id$
  *****************************************************************/
 
-package test.jade.core.behaviours.test2;
+package testAgent.test8;
 
 import jade.core.Agent;
+import jade.core.behaviours.ParallelPriorityBehaviour;
 
 public class TestAgent extends Agent {
-    private static final long serialVersionUID = -9096040912181220547L;
+
+    private static final long serialVersionUID = 202065874077575369L;
 
     public TestAgent() {
         super();
         // TODO Auto-generated constructor stub
     }
-
+    
     protected void setup() {
-        //TestComposeSequentialBehaviour cb = new TestComposeSequentialBehaviour(this, 100);
-        //TestComposeParallelBehaviour cb = new TestComposeParallelBehaviour(this, 100);
-        TestComposePriorityBehaviour cb = new TestComposePriorityBehaviour(this, 100);
-        addBehaviour(cb);
+        printExpected();
+        ParallelPriorityBehaviour ppb = new ParallelPriorityBehaviour(this, 2);
+        ppb.addSubBehaviour(new BehaviourExample(1), 1);
+        ppb.addSubBehaviour(new BehaviourExample(2), 2);
+        ppb.addSubBehaviour(new BehaviourExample(3), 1);
+        addBehaviour(ppb);
+    }
+    
+    private void printExpected() {
+        System.out.println("EXPECTED: 1-3-1-2-3-1-3-");
+        System.out.print("ACTUAL..: ");
     }
 }

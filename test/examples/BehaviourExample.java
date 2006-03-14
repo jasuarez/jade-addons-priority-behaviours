@@ -29,30 +29,43 @@
  $Id$
  *****************************************************************/
 
-package test.jade.core.behaviours.test2;
-
+package examples;
 import jade.core.Agent;
-import jade.core.behaviours.PriorityBehaviour;
+import jade.core.behaviours.Behaviour;
 
-public class TestSimpleBehaviour extends PriorityBehaviour {
-    private static final long serialVersionUID = 8451776370457176540L;
-    private int leftExecutions = 0;
-
-    public TestSimpleBehaviour(Agent a, int priority, int numExecutions) {
-        super(a, priority);
-        leftExecutions = numExecutions;
-        //System.out.println(">TSB creado con prioridad " + priority + " y " + leftExecutions + " ejecuciones.");
+/**
+ * A simple behaviour that can be executed 5 times before ending.
+ * 
+ * @author Juan A. Suárez Romero - University of A Coruña
+ * @version $Date$ $Revision$
+ */
+public class BehaviourExample extends Behaviour {
+    private static final long serialVersionUID = -3134519462636770274L;
+    private int counter = 5;
+    
+    public BehaviourExample() {
+        super();
     }
-
+    
+    public BehaviourExample(Agent a) {
+       super(a);
+    }
+    
     public void action() {
-        //System.out.print(">Llamada a TSB con prioridad " + this.getPriority());
-        //System.out.println(". Quedan " + leftExecutions);
-        leftExecutions--;
-
+        //System.out.print(this.getBehaviourName()+"-");
+        counter--;
+    }
+    
+    public int getCounter() {
+        return counter;
     }
 
     public boolean done() {
-        return (leftExecutions == 0);
+        return counter==0;
     }
-
+    
+    public int onEnd() {
+        //System.out.println("");
+        return 0;
+    }
 }

@@ -30,30 +30,47 @@
  *****************************************************************/
 
 package testAgent.test5;
-
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.ParallelPriorityBehaviour;
 
-public class TestAgent extends Agent {
-
-    private static final long serialVersionUID = 202065874077575369L;
-
-    public TestAgent() {
+public class BehaviourExampleChange extends Behaviour {
+    private static final long serialVersionUID = 8052921726286633878L;
+    private int counter = 3;
+    private int id;
+    
+    public BehaviourExampleChange() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
-    protected void setup() {
-        printExpected();
-        ParallelPriorityBehaviour ppb = new ParallelPriorityBehaviour(this);
-        ppb.addSubBehaviour(new BehaviourExample(1), 3);
-        ppb.addSubBehaviour(new BehaviourExample(2), 2);
-        ppb.addSubBehaviour(new BehaviourExampleChange(3), 4);
-        addBehaviour(ppb);
+    public BehaviourExampleChange(int id) {
+        super();
+        this.id = id;
+    }
+
+    public BehaviourExampleChange(Agent a) {
+       super(a);
     }
     
-    private void printExpected() {
-        System.out.println("EXPECTED: 2-1-2-3-3-3-1-2-1-");
-        System.out.print("ACTUAL..: ");
+    public BehaviourExampleChange(Agent a, int id) {
+        super(a);
+        this.id = id;
+     }
+
+    public void action() {
+        System.out.print(id+"-");
+        counter--;
+        if (counter==2) {
+            ParallelPriorityBehaviour parent = (ParallelPriorityBehaviour) getParent();
+            parent.changePriority(this, 0, true);
+        }
+    }
+    
+    public int getCounter() {
+        return counter;
+    }
+
+    public boolean done() {
+        return counter==0;
     }
 }

@@ -1,19 +1,12 @@
-/*
- * Created on 07-feb-2006
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- * 
- * $Id$
- */
-
 
 package testAgent.test1;
 
 import jade.core.Agent;
-import jade.core.behaviours.PriorityBasedCompositeBehaviour;
+import jade.core.behaviours.ParallelPriorityBehaviour;
 
 public class TestAgent extends Agent {
+
+    private static final long serialVersionUID = -6262536113289737977L;
 
     public TestAgent() {
         super();
@@ -22,11 +15,11 @@ public class TestAgent extends Agent {
     
     protected void setup() {
         printExpected();
-        PriorityBasedCompositeBehaviour pbcb = new PriorityBasedCompositeBehaviour(this);
-        pbcb.addSubBehaviour(new PriorityBehaviourExample(1, 2));
-        pbcb.addSubBehaviour(new PriorityBehaviourExample(2, 2));
-        pbcb.addSubBehaviour(new PriorityBehaviourExample(3, 2));
-        addBehaviour(pbcb);
+        ParallelPriorityBehaviour ppb = new ParallelPriorityBehaviour(this);
+        ppb.addSubBehaviour(new BehaviourExample(1), 2);
+        ppb.addSubBehaviour(new BehaviourExample(2), 2);
+        ppb.addSubBehaviour(new BehaviourExample(3), 2);
+        addBehaviour(ppb);
     }
     
     private void printExpected() {

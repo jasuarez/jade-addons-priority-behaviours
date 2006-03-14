@@ -26,43 +26,39 @@
  Computer Science Department
  University of A Coruña, Spain
  
- $Id: PriorityBehaviourExample.java 32 2006-02-07 13:15:25Z jota $
+ $Id$
  *****************************************************************/
 
-package testAgent.test5;
+package testAgent.test6;
 import jade.core.Agent;
-import jade.core.behaviours.PriorityBasedCompositeBehaviour;
-import jade.core.behaviours.PriorityBehaviour;
+import jade.core.behaviours.Behaviour;
 
-public class PriorityBehaviourExampleChange extends PriorityBehaviour {
+public class BehaviourExample extends Behaviour {
     private static final long serialVersionUID = 8052921726286633878L;
     private int counter = 3;
     private int id;
     
-    public PriorityBehaviourExampleChange() {
+    public BehaviourExample() {
         super();
     }
     
-    public PriorityBehaviourExampleChange(int id, int priority) {
-        super(priority);
+    public BehaviourExample(int id) {
+        super();
         this.id = id;
     }
 
-    public PriorityBehaviourExampleChange(Agent a) {
+    public BehaviourExample(Agent a) {
        super(a);
     }
     
-    public PriorityBehaviourExampleChange(Agent a, int priority) {
-        super(a, priority);
+    public BehaviourExample(Agent a, int id) {
+        super(a);
+        this.id = id;
      }
 
     public void action() {
         System.out.print(id+"-");
         counter--;
-        if (counter==2) {
-            PriorityBasedCompositeBehaviour parent = (PriorityBasedCompositeBehaviour) getParent();
-            parent.changePriority(this, 0, true);
-        }
     }
     
     public int getCounter() {

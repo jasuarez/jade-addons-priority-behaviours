@@ -26,45 +26,34 @@
  Computer Science Department
  University of A Coruña, Spain
  
- $Id: PriorityBehaviourExample.java 32 2006-02-07 13:15:25Z jota $
+ $Id$
  *****************************************************************/
 
-package testAgent.test1;
+package testAgent.test7;
+
 import jade.core.Agent;
-import jade.core.behaviours.PriorityBehaviour;
+import jade.core.behaviours.ParallelPriorityBehaviour;
 
-public class PriorityBehaviourExample extends PriorityBehaviour {
-    private static final long serialVersionUID = 8052921726286633878L;
-    private int counter = 3;
-    private int id;
-    
-    public PriorityBehaviourExample() {
+public class TestAgent extends Agent {
+
+    private static final long serialVersionUID = 202065874077575369L;
+
+    public TestAgent() {
         super();
+        // TODO Auto-generated constructor stub
     }
     
-    public PriorityBehaviourExample(int id, int priority) {
-        super(priority);
-        this.id = id;
-    }
-
-    public PriorityBehaviourExample(Agent a) {
-       super(a);
-    }
-    
-    public PriorityBehaviourExample(Agent a, int priority) {
-        super(a, priority);
-     }
-
-    public void action() {
-        System.out.print(id+"-");
-        counter--;
+    protected void setup() {
+        printExpected();
+        ParallelPriorityBehaviour ppb = new ParallelPriorityBehaviour(this, ParallelPriorityBehaviour.WHEN_ANY);
+        ppb.addSubBehaviour(new BehaviourExample(1), 1);
+        ppb.addSubBehaviour(new BehaviourExample(2), 2);
+        ppb.addSubBehaviour(new BehaviourExample(3), 1);
+        addBehaviour(ppb);
     }
     
-    public int getCounter() {
-        return counter;
-    }
-
-    public boolean done() {
-        return counter==0;
+    private void printExpected() {
+        System.out.println("EXPECTED: 1-3-1-2-3-1-");
+        System.out.print("ACTUAL..: ");
     }
 }
