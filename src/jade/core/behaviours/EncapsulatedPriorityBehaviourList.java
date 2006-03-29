@@ -155,8 +155,8 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
     }
 
     /**
-     * Searches this list for the behaviour with the current highest priority,
-     * but considering only the behaviours which its current priority number is
+     * Searches this list for the behaviour with the dynamic highest priority,
+     * but considering only the behaviours which its dynamic priority number is
      * as higher as the limit.
      * 
      * @param limit
@@ -170,17 +170,17 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
         while (it.hasNext()) {
             EncapsulatedPriorityBehaviour epb = (EncapsulatedPriorityBehaviour) it
                     .next();
-            if (epb.getCurrentPriority() >= limit)
+            if (epb.getDynamicPriority() >= limit)
                 if ((maxBehaviour == null)
-                        || (epb.getCurrentPriority() < maxBehaviour
-                                .getCurrentPriority()))
+                        || (epb.getDynamicPriority() < maxBehaviour
+                                .getDynamicPriority()))
                     maxBehaviour = epb;
         }
         return maxBehaviour;
     }
 
     /**
-     * Searches this list for the behaviour with the current highest priority.
+     * Searches this list for the behaviour with the dynamic highest priority.
      * 
      * @return The behaviour found, or null if this list is empty.
      */
@@ -192,8 +192,8 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
             EncapsulatedPriorityBehaviour epb = (EncapsulatedPriorityBehaviour) it
                     .next();
             if ((maxBehaviour == null)
-                    || (epb.getCurrentPriority() < maxBehaviour
-                            .getCurrentPriority()))
+                    || (epb.getDynamicPriority() < maxBehaviour
+                            .getDynamicPriority()))
                 maxBehaviour = epb;
         }
         return maxBehaviour;

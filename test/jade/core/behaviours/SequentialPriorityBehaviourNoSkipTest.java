@@ -105,7 +105,7 @@ public class SequentialPriorityBehaviourNoSkipTest extends TestCase {
 
     /*
      * Test method for 'jade.core.behaviours.SequentialPriorityBehaviour.addSubBehaviour(Behaviour, int)'
-     * Case when we add a behaviour with a priority lesser than the current.
+     * Case when we add a behaviour with a priority lesser than the dynamic.
      */
     public void testAddSubBehaviourBehaviourIntLesser() {
         spb.addSubBehaviour(be[0], 3);

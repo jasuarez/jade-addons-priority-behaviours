@@ -39,16 +39,16 @@ import jade.util.leap.LinkedList;
 /**
  * Composite behaviour with priority based children scheduling. It is a
  * <code>CompositeBehaviour</code> that executes its children behaviours using
- * their priorities, ant it terminates when all children are done, similary like
- * the <code>ParallelBehaviour</code> run, but using priorities.
+ * their priorities, and it terminates when all children are done, similary like
+ * the <code>ParallelBehaviour</code> runs, but using priorities.
  * 
  * The priorities of the children are represented by a number greater or equal
  * than zero. The lesser is this number, the higher is the priority of the
  * behaviour. The priorities are incrememented during time to avoid its
  * starvation. The exception is when there is any behaviour with a priority 0,
- * in which case this increment is stopped.
+ * in which in this case this increment is stopped.
  * 
- * When a behaviour either has priority 0 or reaches priority 0 is inserted in a
+ * When a behaviour either has or reaches priority 0 is inserted in a
  * list of ready behaviours.
  * 
  * Roughly speaking, the scheduler runs as follows: (1) If there are no child
@@ -60,7 +60,7 @@ import jade.util.leap.LinkedList;
  *          this list.
  *      (4) If the ready behaviours list is empty, then searches all
  *          behaviours, either blocked or not, with priority 0 and insert
- *          they in the ready behaviours list. Resets its current priority.
+ *          they in the ready behaviours list. Resets its priority.
  *      (4) If the ready behaviours list is empty, and there is not any
  *          behaviour with priority 0, then renices all behaviours. That is,
  *          searches for the behaviour with the lesser priority number, and
@@ -127,7 +127,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     private int whenToStop;
 
     /**
-     * A list with all children with a current priority number of 0. The head of
+     * A list with all children with a dynamic priority number of 0. The head of
      * this list is the behaviour to be executed.
      */
     protected EncapsulatedPriorityBehaviourList readyBehaviours = new EncapsulatedPriorityBehaviourList();
@@ -234,11 +234,9 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
         allBehaviours.addElement(epb);
         children.add(b);
         // Checks if this behaviour has the highest priority
-        if (epb.getCurrentPriority() < maxPriority)
-            maxPriority = epb.getCurrentPriority();
+        if (epb.getDynamicPriority() < maxPriority)
+            maxPriority = epb.getDynamicPriority();
         //Checks if the behaviour is ready to run
-//        if (epb.getCurrentPriority() == 0)
-//            readyBehaviours.addElement(epb);
         if (b.isRunnable()) {
             // If all previous children were blocked (this Priority-based
             // Behaviour
@@ -267,34 +265,34 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
      *            0.
      * @param changeNow
      *            True if the change must be reflected inmediately, that is, the
-     *            current priority is reset to the new priority, or False if
+     *            dynamic priority is reset to the new static priority, or False if
      *            this change takes effect after the execution of the behaviour.
      */
     public void changePriority(Behaviour b, int newPriority, boolean changeNow) {
         EncapsulatedPriorityBehaviour epb = allBehaviours.searchBehaviour(b);
         // If we have this behaviour
         if (epb != null) {
-            epb.setPriority(newPriority);
+            epb.setStaticPriority(newPriority);
             if (changeNow) {
                 // If this is not the highest priority behaviour, resets
-                // its current priority.
-                if (epb.getCurrentPriority() > maxPriority) {
-                    epb.resetCurrentPriority();
+                // its dynamic priority.
+                if (epb.getDynamicPriority() > maxPriority) {
+                    epb.resetDynamicPriority();
                     // Checks if now this is the highest priority behaviuor.
-                    if (epb.getCurrentPriority() < maxPriority)
-                        maxPriority = epb.getCurrentPriority();
+                    if (epb.getDynamicPriority() < maxPriority)
+                        maxPriority = epb.getDynamicPriority();
                 } else {
                     // This is the highest priority behaviour, and we change its
                     // priority. So perhaps there is a new highest priority
                     // behaviour.
-                    epb.resetCurrentPriority();
-                    if (epb.getCurrentPriority() < maxPriority)
-                        maxPriority = epb.getCurrentPriority();
+                    epb.resetDynamicPriority();
+                    if (epb.getDynamicPriority() < maxPriority)
+                        maxPriority = epb.getDynamicPriority();
                     else {
                         EncapsulatedPriorityBehaviour mpb = allBehaviours
                                 .searchMaxPriorityBehaviour();
                         if (mpb != null)
-                            maxPriority = mpb.getCurrentPriority();
+                            maxPriority = mpb.getDynamicPriority();
                     }
                 }
           }
@@ -447,7 +445,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
             // are blocked.
             if ((readyBehaviours.isEmpty()) && (maxPriority == 0))
                 maxPriority = allBehaviours.searchMaxPriorityBehaviour(1)
-                        .getCurrentPriority();
+                        .getDynamicPriority();
             while (readyBehaviours.isEmpty()) {
                 renice();
                 readyBehaviours.pruneNotRunnableBehaviours();
@@ -459,14 +457,14 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
      * Remove a behaviour from this <code>ParallelBehaviour</code>.
      * 
      * @param pb
-     *            The behaviur to be removed.
+     *            The behaviour to be removed.
      */
     public void removeSubBehaviour(Behaviour b) {
         EncapsulatedPriorityBehaviour removed = allBehaviours.removeElement(b);
         if (removed != null) {
             children.remove(b);
             b.setParent(null);
-            // Case when the behaviour to be removed has current priority 0 but
+            // Case when the behaviour to be removed has dynamic priority 0 but
             // it is
             // not the behaviour which calls this method. In this last case the
             // behaviour
@@ -477,11 +475,11 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
             if (!b.isRunnable())
                 numBlockedBehaviours--;
             // Perhaps there are a new behaviour with the highest priority.
-            if (removed.getCurrentPriority() == maxPriority) {
+            if (removed.getDynamicPriority() == maxPriority) {
                 EncapsulatedPriorityBehaviour mpb = allBehaviours
                         .searchMaxPriorityBehaviour();
                 if (mpb != null)
-                    maxPriority = mpb.getCurrentPriority();
+                    maxPriority = mpb.getDynamicPriority();
             }
             // If some children still exist and they are all blocked,
             // block this ParallelPriorityBehaviour and notify upwards
@@ -505,16 +503,16 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
         while (it.hasNext()) {
             EncapsulatedPriorityBehaviour epb = (EncapsulatedPriorityBehaviour) it
                     .next();
-            epb.incCurrentPriority(maxPriority);
+            epb.incDynamicPriority(maxPriority);
             // If the behaviour reaches the maximum priority, insert
             // it in the corresponding ready behaviours list.
-            if (epb.getCurrentPriority() == 0) {
+            if (epb.getDynamicPriority() == 0) {
                 readyBehaviours.addElement(epb);
-                epb.resetCurrentPriority();
+                epb.resetDynamicPriority();
             }
             // Is this behaviour the one which highest priority?
-            if (epb.getCurrentPriority() < maxPriority)
-                newMaxPriority = epb.getCurrentPriority();
+            if (epb.getDynamicPriority() < maxPriority)
+                newMaxPriority = epb.getDynamicPriority();
         }
         if (newMaxPriority < maxPriority)
             maxPriority = newMaxPriority;
@@ -543,7 +541,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
         while (it.hasNext()) {
             EncapsulatedPriorityBehaviour epb = (EncapsulatedPriorityBehaviour) it
                     .next();
-            epb.resetCurrentPriority();
+            epb.resetDynamicPriority();
         }
         // Finally, super is in charge of reset the encapsulated behaviours.
         super.reset();
@@ -561,7 +559,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
         EncapsulatedPriorityBehaviour mpb = allBehaviours
                 .searchMaxPriorityBehaviour();
         if (mpb != null)
-            maxPriority = mpb.getCurrentPriority();
+            maxPriority = mpb.getDynamicPriority();
         prepareNextBehaviour();
     }
 

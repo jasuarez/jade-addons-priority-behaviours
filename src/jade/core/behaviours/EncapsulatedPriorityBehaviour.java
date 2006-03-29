@@ -44,6 +44,11 @@ import jade.util.leap.Serializable;
  * behaviour with priority 2; and the last has twice priority than a behaviour
  * with priority 4.
  * 
+ * There are two priorities: static priority and dynamic priority. The former
+ * is the priority that the programmer assigns to the <code>Behaviour</code>.
+ * The dynamic priority is a priority that is managed dynamically by the system,
+ * with a value between 0 and the static priority.
+ * 
  * @author Juan A. Suárez Romero - University of A Coruña
  * @version $Revision$
  */
@@ -56,16 +61,16 @@ class EncapsulatedPriorityBehaviour implements Serializable {
     private Behaviour encapsulatedBehaviour;
 
     /**
-     * The priority of the behaviour.
+     * The static priority of the behaviour.
      */
-    private int defaultPriority;
+    private int staticPriority;
 
     /**
-     * The current priority of the behaviour. This priority is initialized to
-     * <code>defaultPriority</code> and is incremented in order to avoid the
+     * The dynamic priority of the behaviour. This priority is initialized to
+     * <code>staticPriority</code> and is incremented in order to avoid the
      * starvation of the current behaviour.
      */
-    private int currentPriority;
+    private int dynamicPriority;
 
     /**
      * Encapsulates a behaviour. It does not set the agent owning this behaviour
@@ -79,10 +84,10 @@ class EncapsulatedPriorityBehaviour implements Serializable {
     public EncapsulatedPriorityBehaviour(Behaviour b, int priority) {
         super();
         if (priority < 0)
-            defaultPriority = 0;
+            staticPriority = 0;
         else
-            defaultPriority = priority;
-        currentPriority = defaultPriority;
+            staticPriority = priority;
+        dynamicPriority = staticPriority;
         encapsulatedBehaviour = b;
     }
 
@@ -104,56 +109,56 @@ class EncapsulatedPriorityBehaviour implements Serializable {
     }
 
     /**
-     * Returns the priority of this behaviour object.
+     * Returns the static priority of this behaviour object.
      * 
      * @return The priority of this behaviour object.
      */
-    public int getPriority() {
-        return defaultPriority;
+    public int getStaticPriority() {
+        return staticPriority;
     }
 
     /**
-     * Establish a new priority for this behaviour object. Note that the current
+     * Establish a new priority for this behaviour object. Note that the dynamic
      * priority of the behaviour is not changed at all.
      * 
      * @param newPriority
      *            The new priority for this behaviour object.
      * @see ParallelPriorityBehaviour#changePriority
      */
-    protected void setPriority(int newPriority) {
+    protected void setStaticPriority(int newPriority) {
         if (newPriority < 0)
-            defaultPriority = 0;
+            staticPriority = 0;
         else
-            defaultPriority = newPriority;
+            staticPriority = newPriority;
     }
 
     /**
-     * Returns the current priority of this behaviour object.
+     * Returns the dynamic priority of this behaviour object.
      * 
-     * @return The current priority of this behaviour object.
+     * @return The dynamic priority of this behaviour object.
      */
-    public int getCurrentPriority() {
-        return currentPriority;
+    public int getDynamicPriority() {
+        return dynamicPriority;
     }
 
     /**
-     * Increments the current priority of this behaviour object.
+     * Increments the dynamic priority of this behaviour object.
      * 
      * @param increment
-     *            The increment of the current priority, so the new current
-     *            priority is (old current priority - increment).
+     *            The increment of the dynamic priority, so the new current
+     *            priority is (old dynamic priority - increment).
      */
-    protected void incCurrentPriority(int increment) {
-        currentPriority -= increment;
-        if (currentPriority < 0)
-            currentPriority = 0;
+    protected void incDynamicPriority(int increment) {
+        dynamicPriority -= increment;
+        if (dynamicPriority < 0)
+            dynamicPriority = 0;
     }
 
     /**
-     * Establish the current priority of this behaviour object to its normal
+     * Establish the dynamic priority of this behaviour object to its static
      * priority.
      */
-    protected void resetCurrentPriority() {
-        currentPriority = defaultPriority;
+    protected void resetDynamicPriority() {
+        dynamicPriority = staticPriority;
     }
 }

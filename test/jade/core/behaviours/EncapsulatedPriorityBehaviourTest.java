@@ -51,8 +51,8 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testEncapsulatedPriorityBehaviourIntPos() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), 3);
-        assertEquals(3, epb.getPriority());
-        assertEquals(3, epb.getCurrentPriority());
+        assertEquals(3, epb.getStaticPriority());
+        assertEquals(3, epb.getDynamicPriority());
     }
 
     /*
@@ -63,8 +63,8 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testEncapsulatedPriorityBehaviourIntZero() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), 0);
-        assertEquals(0, epb.getPriority());
-        assertEquals(0, epb.getCurrentPriority());
+        assertEquals(0, epb.getStaticPriority());
+        assertEquals(0, epb.getDynamicPriority());
     }
 
     /*
@@ -75,8 +75,8 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testEncapsulatedPriorityBehaviourIntNeg() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), -2);
-        assertEquals(0, epb.getPriority());
-        assertEquals(0, epb.getCurrentPriority());
+        assertEquals(0, epb.getStaticPriority());
+        assertEquals(0, epb.getDynamicPriority());
 
     }
 
@@ -99,7 +99,7 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testGetCurrentPriority() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), 4);
-        assertEquals(4, epb.getCurrentPriority());
+        assertEquals(4, epb.getDynamicPriority());
     }
 
     /*
@@ -109,7 +109,7 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testGetPriority() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), 4);
-        assertEquals(4, epb.getPriority());
+        assertEquals(4, epb.getStaticPriority());
     }
 
     /*
@@ -119,11 +119,11 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testIncCurrentPriority() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), 4);
-        epb.incCurrentPriority(3);
-        assertEquals(1, epb.getCurrentPriority());
-        epb.incCurrentPriority(3);
-        assertEquals(0, epb.getCurrentPriority());
-        assertEquals(4, epb.getPriority());
+        epb.incDynamicPriority(3);
+        assertEquals(1, epb.getDynamicPriority());
+        epb.incDynamicPriority(3);
+        assertEquals(0, epb.getDynamicPriority());
+        assertEquals(4, epb.getStaticPriority());
     }
 
     /*
@@ -133,12 +133,12 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testResetCurrentPriority() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), 4);
-        epb.incCurrentPriority(2);
-        epb.resetCurrentPriority();
-        assertEquals(4, epb.getCurrentPriority());
-        epb.setPriority(5);
-        epb.resetCurrentPriority();
-        assertEquals(5, epb.getCurrentPriority());
+        epb.incDynamicPriority(2);
+        epb.resetDynamicPriority();
+        assertEquals(4, epb.getDynamicPriority());
+        epb.setStaticPriority(5);
+        epb.resetDynamicPriority();
+        assertEquals(5, epb.getDynamicPriority());
     }
 
     /*
@@ -162,9 +162,9 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testSetPriorityNeg() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), 4);
-        epb.setPriority(-5);
-        assertEquals(0, epb.getPriority());
-        assertEquals(4, epb.getCurrentPriority());
+        epb.setStaticPriority(-5);
+        assertEquals(0, epb.getStaticPriority());
+        assertEquals(4, epb.getDynamicPriority());
     }
 
     /*
@@ -175,8 +175,8 @@ public class EncapsulatedPriorityBehaviourTest extends TestCase {
     public void testSetPriority() {
         EncapsulatedPriorityBehaviour epb = new EncapsulatedPriorityBehaviour(
                 new BehaviourExample(), 4);
-        epb.setPriority(10);
-        assertEquals(10, epb.getPriority());
-        assertEquals(4, epb.getCurrentPriority());
+        epb.setStaticPriority(10);
+        assertEquals(10, epb.getStaticPriority());
+        assertEquals(4, epb.getDynamicPriority());
     }
 }

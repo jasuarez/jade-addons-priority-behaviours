@@ -37,7 +37,7 @@ import jade.util.leap.Iterator;
 import jade.util.leap.LinkedList;
 
 /**
- * Composite behaviour with priority based children scheduling. It is a
+ * Composite behaviour with priority-based children scheduling. It is a
  * <code>CompositeBehaviour</code> that executes its children behaviours in sequential form, using
  * first their priorities to establish the sequence and, if two behaviours have the same priority,
  * the order in which they have been added.
@@ -196,7 +196,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
         allBehaviours.addElement(epb);
         children.add(b);
         // If this behaviour preempts the current one
-        if (epb.getCurrentPriority() < maxPriority) {
+        if (epb.getDynamicPriority() < maxPriority) {
             reschedOnNext = true;
             currentExecuted=true;
         }
@@ -229,10 +229,10 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
         EncapsulatedPriorityBehaviour epb = allBehaviours.searchBehaviour(b);
         // If this behaviour is a child
         if (epb != null) {
-            epb.setPriority(newPriority);
-            epb.resetCurrentPriority();
+            epb.setStaticPriority(newPriority);
+            epb.resetDynamicPriority();
             // If this behaviour preempts the current one
-            if (epb.getCurrentPriority() < maxPriority)
+            if (epb.getDynamicPriority() < maxPriority)
                 reschedOnNext=true;
                 currentExecuted=true;
         }
@@ -280,7 +280,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
        Iterator it = allBehaviours.iterator();
        while (it.hasNext()) {
            EncapsulatedPriorityBehaviour epb = (EncapsulatedPriorityBehaviour) it.next();
-           if (epb.getCurrentPriority() == priority)
+           if (epb.getDynamicPriority() == priority)
                readyBehaviours.addElement(epb);
        }
     }
@@ -328,7 +328,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
                     if (rce.isRunnable()) {
                         numBlockedBehaviours--;
                         // If the waked behaviour has a higher priority
-                        if (epb.getCurrentPriority() < maxPriority) {
+                        if (epb.getDynamicPriority() < maxPriority) {
                             reschedOnNext = true;
                             currentExecuted=true;
                             myEvent.init(rce.isRunnable(), NOTIFY_UP);
@@ -379,7 +379,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
             while (readyBehaviours.isEmpty()) {
                 EncapsulatedPriorityBehaviour mpb = allBehaviours.searchMaxPriorityBehaviour(maxPriority+1);
                 if (mpb != null)
-                    maxPriority = mpb.getCurrentPriority();
+                    maxPriority = mpb.getDynamicPriority();
                 filterBehaviours(maxPriority);
                 if (skipBlocked)
                     readyBehaviours.pruneNotRunnableBehaviours();
@@ -450,7 +450,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
         EncapsulatedPriorityBehaviour mpb = allBehaviours
                 .searchMaxPriorityBehaviour();
         if (mpb != null)
-            maxPriority = mpb.getCurrentPriority();
+            maxPriority = mpb.getDynamicPriority();
         prepareNextBehaviour();
     }
 
