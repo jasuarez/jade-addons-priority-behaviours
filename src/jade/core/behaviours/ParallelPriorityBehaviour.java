@@ -92,7 +92,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
      */
     public static final int DEFAULT_PRIORITY = 5;
 
-    private static final long serialVersionUID = 4668737902684655038L;
+    //private static final long serialVersionUID = 4668737902684655038L;
 
     /**
      * A list with all children. This list does not contain the done children.
@@ -593,24 +593,25 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     
     //////////////////////////////////////////////////////////////////////////////
     // UNCONMENT THIS TO TEST THE CLASS
-    
-    protected EncapsulatedPriorityBehaviourList getAllBehaviours() {
-        return allBehaviours;
-    }
-
-    protected EncapsulatedPriorityBehaviourList getDoneBehaviours() {
-        return doneBehaviours;
-    }
-
-    protected int getNumBlockedBehaviours() {
-        return numBlockedBehaviours;
-    }
-
-    protected EncapsulatedPriorityBehaviourList getReadyBehaviours() {
-        return readyBehaviours;
-    }
-    
-    protected LinkedList getAsListChildren() {
-        return children;
-    }
+    //
+    // protected EncapsulatedPriorityBehaviourList getAllBehaviours() {
+    //    return allBehaviours;
+    // }
+    //
+    // protected EncapsulatedPriorityBehaviourList getDoneBehaviours() {
+    //    return doneBehaviours;
+    // }
+    //
+    // protected int getNumBlockedBehaviours() {
+    //    return numBlockedBehaviours;
+    // }
+    // 
+    // protected EncapsulatedPriorityBehaviourList getReadyBehaviours() {
+    //    return readyBehaviours;
+    // }
+    //
+    // protected LinkedList getAsListChildren() {
+    //    return children;
+    // }
+    //////////////////////////////////////////////////////////////////////////////
 }

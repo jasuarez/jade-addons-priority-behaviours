@@ -69,7 +69,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
      */
     public static final int DEFAULT_PRIORITY = 5;
     
-    private static final long serialVersionUID = -8081100734240269128L;
+    //private static final long serialVersionUID = -8081100734240269128L;
     
     /**
      * A list with all children. This list does not contain the done children.
@@ -477,23 +477,25 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     }
     
 
-    // ////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
     // UNCONMENT THIS TO TEST THE CLASS
+    //
+    // protected EncapsulatedPriorityBehaviourList getAllBehaviours() {
+    //    return allBehaviours;
+    // }
+    //
+    // protected LinkedList getAsListChildren() {
+    //    return children;
+    // }
+    //
+    // protected EncapsulatedPriorityBehaviourList getDoneBehaviours() {
+    //    return doneBehaviours;
+    // }
+    //
+    // protected int getNumBlockedBehaviours() {
+    //    return numBlockedBehaviours;
+    // }
+    //////////////////////////////////////////////////////////////////////////////
 
-    protected EncapsulatedPriorityBehaviourList getAllBehaviours() {
-        return allBehaviours;
-    }
-
-    protected LinkedList getAsListChildren() {
-        return children;
-    }
-    
-    protected EncapsulatedPriorityBehaviourList getDoneBehaviours() {
-        return doneBehaviours;
-    }
-
-    protected int getNumBlockedBehaviours() {
-        return numBlockedBehaviours;
-    }    
 }
 
