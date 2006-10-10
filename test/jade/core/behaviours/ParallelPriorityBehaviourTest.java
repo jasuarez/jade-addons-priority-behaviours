@@ -24,7 +24,7 @@
 /*****************************************************************
  Laboratory for Research and Development in Artificial Intelligence (LIDIA)
  Computer Science Department
- University of A Coruña, Spain
+ University of A Coruna, Spain
  
  $Id$
  *****************************************************************/
@@ -39,7 +39,7 @@ import examples.*;
 /**
  * Unit tests for the <code>ParallelPriorityBehaviour</code> class.
  * 
- * @author Juan A. Suárez Romero - University of A Coruña
+ * @author Juan A. Suarez Romero - University of A Coruna
  * @version $Date$ $Revision$
  */
 public class ParallelPriorityBehaviourTest extends TestCase {

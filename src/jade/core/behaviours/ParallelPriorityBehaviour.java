@@ -24,7 +24,7 @@
 /*****************************************************************
  Laboratory for Research and Development in Artificial Intelligence (LIDIA)
  Computer Science Department
- University of A Coruña, Spain
+ University of A Coruna, Spain
  
  $Id$
  *****************************************************************/
@@ -68,7 +68,7 @@ import jade.util.leap.LinkedList;
  *          priority number this number). Go to step 4.
  *      (5) Go to the step 1.
  *
- * @author Juan A. Suárez Romero - University of A Coruña
+ * @author Juan A. Suarez Romero - University of A Coruna
  * @version $Date$ $Revision$
  */
 public class ParallelPriorityBehaviour extends CompositeBehaviour {
@@ -593,25 +593,25 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     
     //////////////////////////////////////////////////////////////////////////////
     // UNCONMENT THIS TO TEST THE CLASS
-    //
-    // protected EncapsulatedPriorityBehaviourList getAllBehaviours() {
-    //    return allBehaviours;
-    // }
-    //
-    // protected EncapsulatedPriorityBehaviourList getDoneBehaviours() {
-    //    return doneBehaviours;
-    // }
-    //
-    // protected int getNumBlockedBehaviours() {
-    //    return numBlockedBehaviours;
-    // }
-    // 
-    // protected EncapsulatedPriorityBehaviourList getReadyBehaviours() {
-    //    return readyBehaviours;
-    // }
-    //
-    // protected LinkedList getAsListChildren() {
-    //    return children;
-    // }
+    //TEST*
+    //TEST* protected EncapsulatedPriorityBehaviourList getAllBehaviours() {
+    //TEST*    return allBehaviours;
+    //TEST* }
+    //TEST*
+    //TEST* protected EncapsulatedPriorityBehaviourList getDoneBehaviours() {
+    //TEST*    return doneBehaviours;
+    //TEST* }
+    //TEST*
+    //TEST* protected int getNumBlockedBehaviours() {
+    //TEST*    return numBlockedBehaviours;
+    //TEST* }
+    //TEST* 
+    //TEST* protected EncapsulatedPriorityBehaviourList getReadyBehaviours() {
+    //TEST*    return readyBehaviours;
+    //TEST* }
+    //TEST*
+    //TEST* protected LinkedList getAsListChildren() {
+    //TEST*    return children;
+    //TEST* }
     //////////////////////////////////////////////////////////////////////////////
 }

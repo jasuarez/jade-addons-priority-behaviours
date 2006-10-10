@@ -24,7 +24,7 @@
 /*****************************************************************
  Laboratory for Research and Development in Artificial Intelligence (LIDIA)
  Computer Science Department
- University of A Coruña, Spain
+ University of A Coruna, Spain
  
  $Id$
  *****************************************************************/

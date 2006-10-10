@@ -24,7 +24,7 @@
 /*****************************************************************
  Laboratory for Research and Development in Artificial Intelligence (LIDIA)
  Computer Science Department
- University of A Coruña, Spain
+ University of A Coruna, Spain
  
  $Id$
  *****************************************************************/
@@ -36,7 +36,7 @@ import jade.core.behaviours.Behaviour;
 /**
  * A simple behaviour that can be executed 5 times before ending.
  * 
- * @author Juan A. Suárez Romero - University of A Coruña
+ * @author Juan A. Suarez Romero - University of A Coruna
  * @version $Date$ $Revision$
  */
 public class BehaviourExample extends Behaviour {

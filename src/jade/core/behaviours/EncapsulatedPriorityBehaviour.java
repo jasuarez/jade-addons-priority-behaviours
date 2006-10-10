@@ -24,7 +24,7 @@
 /*****************************************************************
  Laboratory for Research and Development in Artificial Intelligence (LIDIA)
  Computer Science Department
- University of A Coruña, Spain
+ University of A Coruna, Spain
  
  $Id$
  *****************************************************************/
@@ -49,7 +49,7 @@ import jade.util.leap.Serializable;
  * The dynamic priority is a priority that is managed dynamically by the system,
  * with a value between 0 and the static priority.
  * 
- * @author Juan A. Suárez Romero - University of A Coruña
+ * @author Juan A. Suarez Romero - University of A Coruna
  * @version $Revision$
  */
 class EncapsulatedPriorityBehaviour implements Serializable {

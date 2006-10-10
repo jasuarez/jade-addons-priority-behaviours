@@ -24,7 +24,7 @@
 /*****************************************************************
  Laboratory for Research and Development in Artificial Intelligence (LIDIA)
  Computer Science Department
- University of A Coruña, Spain
+ University of A Coruna, Spain
  
  $Id$
  *****************************************************************/
@@ -41,7 +41,7 @@ import junit.framework.TestCase;
  * Unit tests for the <code>SequentialPriorityBehaviour</code> class, when we
  * skip the blocked behaviours.
  * 
- * @author Juan A. Suárez Romero - University of A Coruña
+ * @author Juan A. Suarez Romero - University of A Coruna
  * @version $Date$ $Revision$
  */
 public class SequentialPriorityBehaviourSkipTest extends TestCase {

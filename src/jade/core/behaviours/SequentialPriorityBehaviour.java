@@ -24,7 +24,7 @@
 /*****************************************************************
  Laboratory for Research and Development in Artificial Intelligence (LIDIA)
  Computer Science Department
- University of A Coruña, Spain
+ University of A Coruna, Spain
  
  $Id$
  *****************************************************************/
@@ -59,7 +59,7 @@ import jade.util.leap.LinkedList;
  *          skip the blocked behaviours, then block this composite behaviour. 
  *      (6) In other case execute this behaviour and go to step 1.
  *
- * @author Juan A. Suárez Romero - University of A Coruña
+ * @author Juan A. Suarez Romero - University of A Coruna
  * @version $Date$ $Revision$
  */
 public class SequentialPriorityBehaviour extends SerialBehaviour {
