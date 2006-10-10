@@ -41,23 +41,38 @@ import jade.util.leap.LinkedList;
  * <code>CompositeBehaviour</code> that executes its children behaviours in sequential form, using
  * first their priorities to establish the sequence and, if two behaviours have the same priority,
  * the order in which they have been added.
- * 
+ * <p>
  * Also this <code>CompositeBehaviour</code> allows two variants: skip the blocked behaviours and
  * without skipping them (default behaviour).
- * 
- * Roughly speaking, the scheduler runs as follows: 
- *      (1) If there are no children behaviours then this <code>CompositeBehaviour<code> is done.
- *      (2) Always pick the behaviour with the highest priority, that is, the behaviour who
- *          priority is the lesser. If two or more behaviours have the highest priority, then
- *          select the one that has been created first.
- *      (3) If the previously selected  behaviour is blocked, and this <code>CompositeBehaviour</code>
- *          is configured to skip the blocked behaviours, then skip this behaviour and go again to
- *          step 2.
- *      (4) If there are not any runnable behaviour (i.e., all the
- *          children is blocked), then block this behaviour.
- *      (5) If the selected behaviour is blocked and this <code>CompositeBehaviour</code> does not
- *          skip the blocked behaviours, then block this composite behaviour. 
- *      (6) In other case execute this behaviour and go to step 1.
+ * <p>
+ * Roughly speaking, the scheduler runs as follows:
+ * <ol>
+ *  <li>
+ *      If there are no children behaviours then this
+ *      <code>CompositeBehaviour<code> is done.
+ *  </li>
+ *  <li>
+ *      Always pick the behaviour with the highest priority, that is, the
+ *      behaviour who priority is the lesser. If two or more behaviours have
+ *      the highest priority, then select the one that has been created first.
+ *  </li>
+ *  <li>
+ *      If the previously selected  behaviour is blocked, and this
+ *      <code>CompositeBehaviour</code> is configured to skip the blocked
+ *      behaviours, then skip this behaviour and go again to step 2.
+ *  </li>
+ *  <li>
+ *      If there are not any runnable behaviour (i.e., all the children is
+ *      blocked), then block this behaviour.
+ *  </li>
+ *  <li>
+ *      If the selected behaviour is blocked and this <code>CompositeBehaviour</code>
+ *      does not skip the blocked behaviours, then block this composite behaviour.
+ *  </li>
+ *  <li>
+ *      In other case execute this behaviour and go to step 1.
+ *  </li>
+ * </ol>
  *
  * @author Juan A. Suarez Romero - University of A Coruna
  * @version $Date$ $Revision$
@@ -77,7 +92,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     private EncapsulatedPriorityBehaviourList allBehaviours = new EncapsulatedPriorityBehaviourList();
 
     /**
-     * This lists contains the same children that <code>allBehaviours</code>,
+     * This list contains the same children that <code>allBehaviours</code>,
      * but without considering the priorities (that is, unencapsulated
      * behaviours).
      */
@@ -101,7 +116,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     private int maxPriority = 0;
 
     /**
-     * Then number of children behaviours that are no runnable.
+     * The number of children behaviours that are no runnable.
      */
     private int numBlockedBehaviours = 0;
 
@@ -137,7 +152,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
      * Creates a <code>SequentialPriorityBehaviour</code> setting the
      * owner agent. It always selects the child with the highest priority.
      * 
-     * @param a The owner of this behaviour.
+     * @param a the owner of this behaviour
      */
     public SequentialPriorityBehaviour(Agent a) {
         super(a);
@@ -147,10 +162,10 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
      * Creates a <code>SequentialPriorityBehaviour</code> setting the
      * owner agent.
 
-     * @param a The owner of this behaviour.
-     * @param skipBlocked True if it is always selected the child with the
-     * highest priority that is runnable, or False if it is always selected
-     * the child with the highest priority, whether it is runnable or not.
+     * @param a the owner of this behaviour
+     * @param skipBlocked <code>true</code> if it is always selected the child with the
+     * highest priority that is runnable, or <code>false</code> if it is always selected
+     * the child with the highest priority, whether it is runnable or not
      */
     public SequentialPriorityBehaviour(Agent a, boolean skipBlocked) {
         super(a);
@@ -160,9 +175,9 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     /**
      * Creates a <code>SequentialPriorityBehaviour</code>.
      * 
-     * @param skipBlocked True if it is always selected the child with the
-     * highest priority that is runnable, or False if it is always selected
-     * the child with the highest priority, whether it is runnable or not.
+     * @param skipBlocked <code>true</code> if it is always selected the child with the
+     * highest priority that is runnable, or <code>false</code> if it is always selected
+     * the child with the highest priority, whether it is runnable or not
      */
     public SequentialPriorityBehaviour(boolean skipBlocked) {
         super();
@@ -170,23 +185,23 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     }
 
     /**
-     * Add a priority behaviour to this
+     * Adds a priority behaviour to this
      * <code>SequentialPriorityBehaviour</code>, with a default priority.
      * 
      * @param b
-     *            The behaviour to be added.
+     *            the behaviour to be added
      */
     public void addSubBehaviour(Behaviour b) {
         addSubBehaviour(b, SequentialPriorityBehaviour.DEFAULT_PRIORITY);
     }
 
     /**
-     * Add a priority behaviour to this <code>SequentialPriorityBehaviour</code>.
+     * Adds a priority behaviour to this <code>SequentialPriorityBehaviour</code>.
      * 
      * @param b
-     *            The behaviour to be added.
+     *            the behaviour to be added
      * @param priority
-     *            The priority of the behaviour. If it is less than 0 then it is
+     *            the priority of the behaviour. If it is less than 0 then it is
      *            changed to 0.
      */
     public void addSubBehaviour(Behaviour b, int priority) {
@@ -219,10 +234,10 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     /**
      * Changes the priority of a behaviour.
      * 
-     * @param pb
-     *            The behaviour which priority is to be changed.
+     * @param b
+     *            the behaviour which priority is to be changed
      * @param newPriority
-     *            The new priority of the behaviour. If it less than 0 then uses
+     *            the new priority of the behaviour. If it less than 0 then uses
      *            0.
      */
     public void changePriority(Behaviour b, int newPriority) {
@@ -239,7 +254,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     }
      
     /**
-     * Returns true if this behaviour must be terminated.
+     * Returns <code>true</code> if this behaviour must be terminated.
      * 
      * @see jade.core.behaviours.CompositeBehaviour#checkTermination(boolean,
      *      int)
@@ -270,11 +285,11 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     }
 
     /**
-     * Insert into the <code>readyBehaviours</code> list all behaviours with a 
+     * Inserts into the <code>readyBehaviours</code> list all behaviours with a 
      * concrete priority.
      * This list is not empty at first.
      * 
-     * @param priority The priority of the behaviours that will be inserted.
+     * @param priority the priority of the behaviours that will be inserted
      */
     private void filterBehaviours(int priority) {
        Iterator it = allBehaviours.iterator();
@@ -286,7 +301,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     }
 
     /**
-     * Return a Collection view of the children of this behaviour.
+     * Returns a Collection view of the children of this behaviour.
      * 
      * @see jade.core.behaviours.CompositeBehaviour#getChildren()
      */
@@ -295,7 +310,7 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     }
 
     /**
-     * Get the current child to be executed.
+     * Gets the current child to be executed.
      * 
      * @see jade.core.behaviours.CompositeBehaviour#getCurrent()
      */
@@ -388,10 +403,10 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
     }
     
     /**
-     * Remove a behaviour from this <code>SequentialBehaviour</code>.
+     * Removes a behaviour from this <code>SequentialPriorityBehaviour</code>.
      * 
-     * @param pb
-     *            The behaviur to be removed.
+     * @param b
+     *            the behaviour to be removed
      */
     public void removeSubBehaviour(Behaviour b) {
         EncapsulatedPriorityBehaviour removed = allBehaviours.removeElement(b);
@@ -479,23 +494,22 @@ public class SequentialPriorityBehaviour extends SerialBehaviour {
 
     //////////////////////////////////////////////////////////////////////////////
     // UNCONMENT THIS TO TEST THE CLASS
-    //
-    // protected EncapsulatedPriorityBehaviourList getAllBehaviours() {
-    //    return allBehaviours;
-    // }
-    //
-    // protected LinkedList getAsListChildren() {
-    //    return children;
-    // }
-    //
-    // protected EncapsulatedPriorityBehaviourList getDoneBehaviours() {
-    //    return doneBehaviours;
-    // }
-    //
-    // protected int getNumBlockedBehaviours() {
-    //    return numBlockedBehaviours;
-    // }
+    //TEST*
+    //TEST* protected EncapsulatedPriorityBehaviourList getAllBehaviours() {
+    //TEST*    return allBehaviours;
+    //TEST* }
+    //TEST*
+    //TEST* protected LinkedList getAsListChildren() {
+    //TEST*    return children;
+    //TEST* }
+    //TEST*
+    //TEST* protected EncapsulatedPriorityBehaviourList getDoneBehaviours() {
+    //TEST*    return doneBehaviours;
+    //TEST* }
+    //TEST*
+    //TEST* protected int getNumBlockedBehaviours() {
+    //TEST*    return numBlockedBehaviours;
+    //TEST* }
     //////////////////////////////////////////////////////////////////////////////
-
 }
 

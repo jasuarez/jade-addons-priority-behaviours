@@ -41,32 +41,46 @@ import jade.util.leap.LinkedList;
  * <code>CompositeBehaviour</code> that executes its children behaviours using
  * their priorities, and it terminates when all children are done, similary like
  * the <code>ParallelBehaviour</code> runs, but using priorities.
- * 
+ * <p>
  * The priorities of the children are represented by a number greater or equal
  * than zero. The lesser is this number, the higher is the priority of the
  * behaviour. The priorities are incrememented during time to avoid its
  * starvation. The exception is when there is any behaviour with a priority 0,
  * in which in this case this increment is stopped.
- * 
+ * <p>
  * When a behaviour either has or reaches priority 0 is inserted in a
  * list of ready behaviours.
- * 
- * Roughly speaking, the scheduler runs as follows: (1) If there are no child
- * behaviours then this <code>CompositeBehaviour<code> is done.
- *      (2) If there are not any runnable behaviour (i.e., all the
- *          children is blocked), then block this behaviour.
- *      (3) While there are behaviours in the ready behaviours list, picks the
- *          first one, and if it is runnable then execute it. Drop it from
- *          this list.
- *      (4) If the ready behaviours list is empty, then searches all
- *          behaviours, either blocked or not, with priority 0 and insert
- *          they in the ready behaviours list. Resets its priority.
- *      (4) If the ready behaviours list is empty, and there is not any
- *          behaviour with priority 0, then renices all behaviours. That is,
- *          searches for the behaviour with the lesser priority number, and
- *          increment all the priorities by  this number (i.e., rests to the
- *          priority number this number). Go to step 4.
- *      (5) Go to the step 1.
+ * <p>
+ * Roughly speaking, the scheduler runs as follows:
+ * <ol>
+ *  <li>
+ *      If there are no child behaviours then this
+ *      <code>CompositeBehaviour<code> is done.
+ *  </li>
+ *  <li>
+ *      If there are not any runnable behaviour (i.e., all the children is
+ *      blocked), then block this behaviour.
+ *  </li>
+ *  <li>
+ *      While there are behaviours in the ready behaviours list, picks the
+ *      first one, and if it is runnable then execute it. Drop it from this list.
+ *  </li>
+ *  <li>
+ *      If the ready behaviours list is empty, then searches all behaviours,
+ *      either blocked or not, with priority 0 and insert they in the ready
+ *      behaviours list. Resets its priority.
+ *  </li>
+ *  <li>
+ *      If the ready behaviours list is empty, and there is not any behaviour
+ *      with priority 0, then renices all behaviours. That is, searches for the
+ *      behaviour with the lesser priority number, and increment all the
+ *      priorities by  this number (i.e., rests to the priority number this
+ *      number). Go to step 4.
+ *  </li>
+ *  <li>
+ *      Go to the step 1.
+ *  </li>
+ * </ol>
  *
  * @author Juan A. Suarez Romero - University of A Coruna
  * @version $Date$ $Revision$
@@ -100,7 +114,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     private EncapsulatedPriorityBehaviourList allBehaviours = new EncapsulatedPriorityBehaviourList();
 
     /**
-     * This lists contains the same children that <code>allBehaviours</code>,
+     * This list contains the same children that <code>allBehaviours</code>,
      * but without considering the priorities (that is, unencapsulated
      * behaviours).
      */
@@ -117,7 +131,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     private int maxPriority = 0;
 
     /**
-     * Then number of children behaviours that are no runnable.
+     * The number of children behaviours that are no runnable.
      */
     private int numBlockedBehaviours = 0;
     
@@ -143,12 +157,12 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     }
 
     /**
-     * Construct a <code>ParallelPriorityBehaviour</code> without setting the
+     * Constructs a <code>ParallelPriorityBehaviour</code> without setting the
      * owner agent.
      * 
      * @param endCondition This value defines the termination condition
      * for this <code>ParallelPriorityBehaviour</code>. Use
-     * <ol>
+     * <ul>
      * <li>
      * <code>WHEN_ALL</code> to terminate this <code>ParallelPriorityBehaviour</code>
      * when all its children are done.
@@ -161,7 +175,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
      * a positive <code>int</code> value n to terminate this
      * <code>ParallelPriorityBehaviour</code> when n of its children are done.
      * </li>
-     * </ol>
+     * </ul>
      */
     public ParallelPriorityBehaviour(int endCondition) {
         super();
@@ -172,7 +186,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
      * Creates a <code>ParallelPriorityBehaviour</code> setting the
      * owner agent. This behaviour terminates when all children are done.
      * 
-     * @param a
+     * @param a the agent owning this behaviour
      */
     public ParallelPriorityBehaviour(Agent a) {
         super(a);
@@ -180,12 +194,13 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     }
     
     /**
-     * Construct a <code>ParallelPriorityBehaviour</code> setting the
+     * Constructs a <code>ParallelPriorityBehaviour</code> setting the
      * owner agent.
      * 
+     * @param a the agent owning this behaviour
      * @param endCondition This value defines the termination condition
      * for this <code>ParallelPriorityBehaviour</code>. Use
-     * <ol>
+     * <ul>
      * <li>
      * <code>WHEN_ALL</code> to terminate this <code>ParallelPriorityBehaviour</code>
      * when all its children are done.
@@ -198,7 +213,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
      * a positive <code>int</code> value n to terminate this
      * <code>ParallelPriorityBehaviour</code> when n of its children are done.
      * </li>
-     * </ol>
+     * </ul>
      */
     public ParallelPriorityBehaviour(Agent a, int endCondition) {
         super(a);
@@ -206,24 +221,24 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     }
 
     /**
-     * Add a priority behaviour to this
+     * Adds a priority behaviour to this
      * <code>ParallelPriorityBehaviour</code>, with a default priority.
      * 
      * @param b
-     *            The behaviour to be added.
+     *            the behaviour to be added
      */
     public void addSubBehaviour(Behaviour b) {
         addSubBehaviour(b, ParallelPriorityBehaviour.DEFAULT_PRIORITY);
     }
 
     /**
-     * Add a priority behaviour to this
+     * Adds a priority behaviour to this
      * <code>ParallelPriorityBehaviour</code>.
      * 
      * @param b
-     *            The behaviour to be added.
+     *            the behaviour to be added
      * @param priority
-     *            The priority of the behaviour. If it is less than 0 then it is
+     *            the priority of the behaviour. If it is less than 0 then it is
      *            changed to 0.
      */
     public void addSubBehaviour(Behaviour b, int priority) {
@@ -258,15 +273,15 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     /**
      * Changes the priority of a behaviour.
      * 
-     * @param pb
-     *            The behaviour which priority is to be changed.
+     * @param b
+     *            the behaviour which priority is to be changed
      * @param newPriority
-     *            The new priority of the behaviour. If it less than 0 then uses
+     *            the new priority of the behaviour. If it less than 0 then uses
      *            0.
      * @param changeNow
-     *            True if the change must be reflected inmediately, that is, the
-     *            dynamic priority is reset to the new static priority, or False if
-     *            this change takes effect after the execution of the behaviour.
+     *            <code>true</code> if the change must be reflected inmediately, that is, the
+     *            dynamic priority is reset to the new static priority, or <code>false</code> if
+     *            this change takes effect after the execution of the behaviour
      */
     public void changePriority(Behaviour b, int newPriority, boolean changeNow) {
         EncapsulatedPriorityBehaviour epb = allBehaviours.searchBehaviour(b);
@@ -300,7 +315,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     }
 
     /**
-     * Returns true if this behaviour must be terminated.
+     * Returns <code>true</code> if this behaviour must be terminated.
      * 
      * @see jade.core.behaviours.CompositeBehaviour#checkTermination(boolean,
      *      int)
@@ -332,7 +347,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     }
 
     /**
-     * Return a Collection view of the children of this behaviour.
+     * Returns a Collection view of the children of this behaviour.
      * 
      * @see jade.core.behaviours.CompositeBehaviour#getChildren()
      */
@@ -382,8 +397,8 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
                             // blocked behaviours
                             numBlockedBehaviours--;
                             // Only if all children were blocked (this
-                            // ParallelBehaviour was
-                            // blocked too), restart this ParallelBehaviour and
+                            // ParallelPriorityBehaviour was
+                            // blocked too), restart this ParallelPriorityBehaviour and
                             // notify upwards
                             if (!isRunnable()) {
                                 myEvent.init(true, NOTIFY_UP);
@@ -399,7 +414,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
                             numBlockedBehaviours++;
                             // Only if, with the addition of this child all
                             // sub-behaviours
-                            // are now blocked, block this ParallelBehaviour and
+                            // are now blocked, block this ParallelPriorityBehaviour and
                             // notify upwards
                             if (numBlockedBehaviours == allBehaviours.size()) {
                                 myEvent.init(false, NOTIFY_UP);
@@ -454,10 +469,10 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     }
 
     /**
-     * Remove a behaviour from this <code>ParallelBehaviour</code>.
+     * Removes a behaviour from this <code>ParallelPriorityBehaviour</code>.
      * 
-     * @param pb
-     *            The behaviour to be removed.
+     * @param b
+     *            the behaviour to be removed
      */
     public void removeSubBehaviour(Behaviour b) {
         EncapsulatedPriorityBehaviour removed = allBehaviours.removeElement(b);
@@ -492,7 +507,7 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
     }
 
     /**
-     * Renice all children behaviours. Increment the priorities of the
+     * Renices all children behaviours. Increments the priorities of the
      * behaviours to avoid the starvation of this behaviours. During this
      * process all behaviours that reach the priority 0 are inserted in the
      * <code>readyBehaviours</code> list.
@@ -574,6 +589,11 @@ public class ParallelPriorityBehaviour extends CompositeBehaviour {
         prepareNextBehaviour();
     }
     
+    /**
+     * Checks whether this <code>ParallelPriorityBehaviour</code> needs to end.
+     * 
+     * @return <code>true</code> if this behaviour ends
+     */
     private boolean evalCondition() {   
         boolean cond;
         switch(whenToStop) {

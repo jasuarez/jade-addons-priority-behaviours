@@ -37,13 +37,13 @@ import jade.util.leap.Serializable;
 /**
  * A special class which acts as a wrapper for a <code>Behaviour</code> in
  * order to add priorities to it.
- * 
+ * <p>
  * The priority of a behaviour is represented by a number greater or equal
  * than 0. The lesser this number is, the higher is the priority of the
  * behaviour. So a behaviour with a priority 1 has more priority than a
  * behaviour with priority 2; and the last has twice priority than a behaviour
  * with priority 4.
- * 
+ * <p>
  * There are two priorities: static priority and dynamic priority. The former
  * is the priority that the programmer assigns to the <code>Behaviour</code>.
  * The dynamic priority is a priority that is managed dynamically by the system,
@@ -77,9 +77,9 @@ class EncapsulatedPriorityBehaviour implements Serializable {
      * object.
      * 
      * @param b
-     *            The behaviour to be encapsulated.
+     *            the behaviour to be encapsulated
      * @param priority
-     *            The priority of this behaviour object.
+     *            the priority of this behaviour object
      */
     public EncapsulatedPriorityBehaviour(Behaviour b, int priority) {
         super();
@@ -92,7 +92,7 @@ class EncapsulatedPriorityBehaviour implements Serializable {
     }
 
     /**
-     * Set the agent owning this behaviour.
+     * Sets the agent owning this behaviour.
      * 
      * @see jade.core.behaviours.Behaviour#setAgent(jade.core.Agent)
      */
@@ -102,7 +102,8 @@ class EncapsulatedPriorityBehaviour implements Serializable {
 
     /**
      * Returns the encapsulated behaviour.
-     * @return
+     * 
+     * @return the encapsulated behaviour
      */
     public Behaviour getBehaviour() {
         return encapsulatedBehaviour;
@@ -111,18 +112,18 @@ class EncapsulatedPriorityBehaviour implements Serializable {
     /**
      * Returns the static priority of this behaviour object.
      * 
-     * @return The priority of this behaviour object.
+     * @return the priority of this behaviour object
      */
     public int getStaticPriority() {
         return staticPriority;
     }
 
     /**
-     * Establish a new priority for this behaviour object. Note that the dynamic
+     * Establishes a new priority for this behaviour object. Note that the dynamic
      * priority of the behaviour is not changed at all.
      * 
      * @param newPriority
-     *            The new priority for this behaviour object.
+     *            the new priority for this behaviour object
      * @see ParallelPriorityBehaviour#changePriority
      */
     protected void setStaticPriority(int newPriority) {
@@ -135,7 +136,7 @@ class EncapsulatedPriorityBehaviour implements Serializable {
     /**
      * Returns the dynamic priority of this behaviour object.
      * 
-     * @return The dynamic priority of this behaviour object.
+     * @return the dynamic priority of this behaviour object
      */
     public int getDynamicPriority() {
         return dynamicPriority;
@@ -145,8 +146,8 @@ class EncapsulatedPriorityBehaviour implements Serializable {
      * Increments the dynamic priority of this behaviour object.
      * 
      * @param increment
-     *            The increment of the dynamic priority, so the new current
-     *            priority is (old dynamic priority - increment).
+     *            the increment of the dynamic priority, so the new current
+     *            priority is (old dynamic priority - increment)
      */
     protected void incDynamicPriority(int increment) {
         dynamicPriority -= increment;
@@ -155,7 +156,7 @@ class EncapsulatedPriorityBehaviour implements Serializable {
     }
 
     /**
-     * Establish the dynamic priority of this behaviour object to its static
+     * Establishes the dynamic priority of this behaviour object to its static
      * priority.
      */
     protected void resetDynamicPriority() {

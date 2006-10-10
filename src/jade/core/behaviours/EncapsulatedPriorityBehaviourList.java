@@ -48,8 +48,8 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
     /**
      * Appends the specified behaviuor to the end of this list.
      * 
-     * @param pb
-     *            Behaviour to be appended to this list.
+     * @param epb
+     *            the behaviour to be appended to this list
      */
     public void addElement(EncapsulatedPriorityBehaviour epb) {
         add(epb);
@@ -60,10 +60,10 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
      * subsequent elements to the left (subtracts one from their indices).
      * 
      * @param index
-     *            The index of the behaviour to be removed.
+     *            the index of the behaviour to be removed
      * @throws IndexOutOfBoundsException
      *             If the specified index is out of range (index < 0 || index >=
-     *             size()).
+     *             size())
      */
     public void removeElement(int index) throws IndexOutOfBoundsException {
         remove(index);
@@ -73,9 +73,8 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
      * Removes the first occurrence of the specified behaviour in this list. If
      * the list does not contain the behaviour, it is unchanged.
      * 
-     * @param pb
-     *            Behaviour to be removed from this list, if present.
-     * @return True if the list contained the specified behaviour.
+     * @param epb
+     *            the behaviour to be removed from this list, if present
      */
     public void removeElement(EncapsulatedPriorityBehaviour epb) {
         remove(epb);
@@ -84,12 +83,12 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
     /**
      * Removes the first occurrence of the element that encapsulates the
      * specified behaviour. Returns this element if the list contains it, or
-     * null in other case.
+     * <code>null</code> in other case.
      * 
      * @param b
-     *            The encapsulated behaviour to be removed.
-     * @return The <code>EncapsulatedPriorityBehaviour</code> removed, or null
-     *         if does not exist.
+     *            the encapsulated behaviour to be removed
+     * @return the <code>EncapsulatedPriorityBehaviour</code> removed, or <code>null</code>
+     *         if does not exist
      */
     public EncapsulatedPriorityBehaviour removeElement(Behaviour b) {
         Iterator it = this.iterator();
@@ -108,11 +107,11 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
      * Returns the behaviour at the specified position in this list.
      * 
      * @param index
-     *            Index of behaviour to return.
-     * @return The behaviour at the specified position in this list.
+     *            the index of behaviour to return
+     * @return the behaviour at the specified position in this list
      * @throws IndexOutOfBoundsException
      *             If the specified index is out of range (index < 0 || index >=
-     *             size()).
+     *             size())
      */
     public EncapsulatedPriorityBehaviour getElement(int index)
             throws IndexOutOfBoundsException {
@@ -124,8 +123,9 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
      * encapsulates the specified behaviour.
      * 
      * @param b
-     *            The behaviour to be searched.
-     * @return The <code></code> found, or null in other case.
+     *            the behaviour to be searched
+     * @return the <code>EncapsulatedPriorityBehaviour</code> found,
+     *          or <code>null</code> in other case
      */
     public EncapsulatedPriorityBehaviour searchBehaviour(Behaviour b) {
         Iterator it = this.iterator();
@@ -160,8 +160,8 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
      * as higher as the limit.
      * 
      * @param limit
-     *            The limit for the priority.
-     * @return The behaviour found, or null if none is found.
+     *            the limit for the priority
+     * @return the behaviour found, or <code>null</code> if none is found
      */
     public EncapsulatedPriorityBehaviour searchMaxPriorityBehaviour(int limit) {
         EncapsulatedPriorityBehaviour maxBehaviour = null;
@@ -182,7 +182,7 @@ class EncapsulatedPriorityBehaviourList extends LinkedList implements
     /**
      * Searches this list for the behaviour with the dynamic highest priority.
      * 
-     * @return The behaviour found, or null if this list is empty.
+     * @return the behaviour found, or <code>null</code> if this list is empty
      */
     public EncapsulatedPriorityBehaviour searchMaxPriorityBehaviour() {
         EncapsulatedPriorityBehaviour maxBehaviour = null;
