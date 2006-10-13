@@ -1,0 +1,43 @@
+<project basedir="." name="JADE Priority Behaviours" default="compile" >
+<!-- set global properties for this build -->  <property value="src" name="src" />
+  <property value="classes" name="build" />
+  <property value="lib" name="lib" />
+  <property value="doc" name="doc" />
+  <property value="priorityBehaviours" name="libName" />
+  <property value="modern" name="build.compiler" />
+  <property value="on" name="javac.optimize" />
+  <property value="off" name="javac.debug" />
+  <target name="init" >
+<!-- Create the time stamp -->    <tstamp/>
+    <mkdir dir="${build}" />
+    <mkdir dir="${lib}" />
+    <mkdir dir="${doc}" />
+  </target>
+<!-- Compile the java code from ${src} into ${build} -->  <target depends="init" name="compile" >
+    <javac deprecation="on" destdir="${build}" srcdir="${src}" nowarn="off" debug="${javac.debug}" optimize="${javac.optimize}" />
+  </target>
+<!-- Make jars file and put in ${lib} -->  <target depends="init, compile" name="lib" >
+    <jar jarfile="${lib}/${libName}.jar" >
+      <fileset dir="${build}" />
+    </jar>
+  </target>
+<!-- Make distribution zip file and put in ${dist} -->  <target depends="init, lib, doc" name="dist" >
+    <zip basedir="../.." zipfile="../${libName}AddOn.zip" >
+      <include name="add-ons/priorityBehaviours/License" />
+      <include name="add-ons/priorityBehaviours/build.xml" />
+      <include name="add-ons/priorityBehaviours/lib/${libName}.jar" />
+      <include name="add-ons/priorityBehaviours/src/**" />
+      <include name="add-ons/priorityBehaviours/doc/**" />
+    </zip>
+  </target>
+<!--Makes Java Doc-->  <target depends="init" name="doc" description="generate javadoc documentation" >
+    <javadoc use="true" destdir="${doc}" public="true" author="true" windowtitle="JADE Priority Behaviours API Reference" packagenames="jade.core.behaviours.*" sourcepath="${src}" />
+  </target>
+<!--Makes all-->  <target depends="compile, lib, doc, dist" name="all" />
+<!-- delete ${build}, ${lib} and ${doc} directories -->  <target name="clean" description="clean up" >
+<!-- Delete the ${build} directory tree -->    <delete file="${lib}/${libName}.jar" includeEmptyDirs="true" >
+      <fileset dir="${build}" />
+      <fileset dir="${doc}" />
+    </delete>
+  </target>
+</project>
