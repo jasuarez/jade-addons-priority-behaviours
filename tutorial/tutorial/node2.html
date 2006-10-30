@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="tutorial">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tutorial.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="tutorial.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html32"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html30"
+  HREF="tutorial.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html24"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html33"
+  HREF="node3.html">Concurrent management of behaviours</A>
+<B> Up:</B> <A NAME="tex2html31"
+  HREF="tutorial.html">JADE Priority-Based Scheduler Add-On</A>
+<B> Previous:</B> <A NAME="tex2html25"
+  HREF="node1.html">Requirements</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00020000000000000000">
+Description</A>
+</H1>
+In the current version of <SPAN  CLASS="textit">JADE</SPAN><A NAME="tex2html1"
+  HREF="footnode.html#foot20"><SUP><SPAN CLASS="arabic">0</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A> an agent can contain several behaviours. Each agent
+contains an internal scheduler that manages its behaviuors in a round-robin
+manner. That is, the scheduler selects the first created behaviour and executes
+it<A NAME="tex2html2"
+  HREF="footnode.html#foot21"><SUP><SPAN CLASS="arabic">0</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A>. Then it selects the next one, and also executes it, and so on. When
+the last behaviour is executed, the scheduler restart again with the first
+behaviour, and so forth.
+
+<P>
+The user are not able to assign more priority to one behaviour than to others:
+all behaviours are executed with the same priority. In some situations, as can
+be seen in several posts to the <SPAN  CLASS="textit">JADE mail list</SPAN>, it would be desirable to
+assign different priorities to each behaviour so the scheduler executes more
+frequently those behaviours with a higher priority.
+
+<P>
+The aim of this add-on is to provide a scheduler to <SPAN  CLASS="textit">JADE</SPAN> that is able to
+manage the behaviours using priorities. As it can be seen soon, this is done by
+providing two new <TT>CompositeBehaviours</TT> in which the children are
+scheduled using priorities. One of these behaviuors schedule its children in a
+parallel way, while the other behaviour schedule its children in a sequential
+way.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html34"
+  HREF="node3.html">Concurrent management of behaviours with priorities</A>
+<LI><A NAME="tex2html35"
+  HREF="node4.html">Sequential management of behaviours with priorities</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html32"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html30"
+  HREF="tutorial.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html24"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html33"
+  HREF="node3.html">Concurrent management of behaviours</A>
+<B> Up:</B> <A NAME="tex2html31"
+  HREF="tutorial.html">JADE Priority-Based Scheduler Add-On</A>
+<B> Previous:</B> <A NAME="tex2html25"
+  HREF="node1.html">Requirements</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Juan A. Suarez Romero
+2006-10-27
+</ADDRESS>
+</BODY>
+</HTML>

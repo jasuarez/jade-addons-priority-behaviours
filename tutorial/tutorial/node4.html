@@ -1,0 +1,395 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Sequential management of behaviours with priorities</TITLE>
+<META NAME="description" CONTENT="Sequential management of behaviours with priorities">
+<META NAME="keywords" CONTENT="tutorial">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tutorial.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html52"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html50"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html46"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html53"
+  HREF="node5.html">Credits</A>
+<B> Up:</B> <A NAME="tex2html51"
+  HREF="node2.html">Description</A>
+<B> Previous:</B> <A NAME="tex2html47"
+  HREF="node3.html">Concurrent management of behaviours</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00022000000000000000">
+Sequential management of behaviours with priorities</A>
+</H2>
+Another composite behaviour provided by this add-on is
+<TT>SequentialPriorityBehaviour</TT>. This new behaviour manages its
+children in a sequential way, executing first those children with the highest
+priority. In this way, this behaviour is similar to the current
+<TT>SequentialBehaviour</TT>.
+
+<P>
+Each child is assigned with a priority by the user. The scheduler selects the
+first inserted behaviour with the highest priority, and executes it until it
+ends. During the execution, can happen several things. The first is that a new
+child with a higher priority is inserted, or that an already existent child with
+lesser priority changes to get a higher priority. In both cases, the scheduler
+stops the execution of the current behaviour and it selects the new child,
+starting to execute it until it ends.
+
+<P>
+The other issue happens when the selected child is blocked or becomes blocked.
+If we were using a <TT>SequentialBehaviour</TT> this composite behaviour would
+become blocked until the selected child becomes unblocked. In the case of the
+new <TT>SequentialPriorityBehaviour</TT> this policy can be changed. The default
+policy is the same as in the <TT>SequentialBehaviour</TT>, that is, the
+<TT>SequentialPriorityBehaviour</TT> becomes blocked until the selected child
+becomes runnable. The other policy is to skip the blocked children. So when the
+<TT>SequentialPriorityBehaviour</TT> selects a blocked sub-behaviour, the
+scheduler skips it and selects the next first inserted behaviour with the
+highest priority that is runnable. In both cases if a new behaviour with a
+higher priority appears, the scheduler selects the new one.
+
+<P>
+As in the last section, In order to understand the functioning of this new
+behaviour, we will use an example similar to the one used in the last section.
+In this case we will create a <TT>SequentialPriorityBehaviour</TT> using the
+policy of skipping the blocked children (see listing
+<A HREF="#code:sequentialagent">3</A>). Also we will create four children, <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN>
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN>, with priority <TT>4</TT>, <TT>1</TT>, <TT>0</TT> and <TT>1</TT>,
+respectively. This sub-behaviours are the same as in the last section, and they
+end when they are executed twice (see listing <A HREF="#code:children">1</A>). To make the
+example more complete, children <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN> are blocked. In table
+<A HREF="#table:sequentialprioritybehaviour">2</A> can be noticed the steps followed by the
+algorithm.
+
+<P>
+<BR>
+<IMG
+ WIDTH="571" HEIGHT="300" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="\begin{lstlisting}[caption={Source code for the agent using
+\texttt{SequentialPr...
+...), 0);
+spb.addSubBehaviour(new ChildBehaviour(''D''), 1);
+}
+}
+\end{lstlisting}">
+<BR>
+
+<P>
+
+<OL>
+<LI>At first time, the scheduler searches for the highest priority behaviour
+that has been inserted before. In this case, the child <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN> is selected, so the
+scheduler executes it.
+</LI>
+<LI>Because child <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN> does not still ends, the scheduler continues executing
+it.
+</LI>
+<LI>Now, as <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN> was executed twice, it ends. Therefore, the scheduler removes
+<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN>.
+</LI>
+<LI>The scheduler searches again for the highest priority behaviour that has
+been inserted first. In this case the selected behaviour is <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN>. But as <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN> is
+blocked and the policy is to skip the blocked children, the scheduler searches
+for the next highest priority behaviour. And, in this case, the selected
+behaviour is <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN>, that is not blocked. So the scheduler executes it.
+</LI>
+<LI>After the execution of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN>, we suppose that <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN> becomes runnable.
+Thus, the highest priority behaviour inserted first is <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN>, and is runnable. So
+the scheduler selects <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN> and executes it.
+</LI>
+<LI>Again, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN> is the highest priority behaviour, so the schedulers reruns it.
+</LI>
+<LI>As <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN> ends, it is removed.
+</LI>
+<LI>The scheduler searches for the new highest priority behaviour, which is
+<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN>. So the scheduler executes it.
+</LI>
+<LI>As <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN> has been executed twice, it is removed from the
+<TT>SequentialPriorityBehaviour</TT>.
+</LI>
+<LI>Now the only remaining child is <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN>, and because it is runnable, the
+scheduler executes it.
+</LI>
+<LI>As <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN> does not still end, it is executed once again.
+</LI>
+<LI><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN> ends, so it is removed. And because all children have finished, the
+<TT>SequentialPriorityBehaviour</TT> ends.
+</LI>
+</OL>
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="153"></A>
+<TABLE>
+<CAPTION><STRONG>Table 2:</STRONG>
+Example of scheduling in <TT>SequentialPriorityBehaviour</TT></CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+
+</DIV><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT">STEP</TD>
+<TD ALIGN="LEFT">CHILDREN</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">1</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\:B^1,\:\underline{C^0},\:D^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="128" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$\langle A^4,\:B^1,\:\underline{C^0},\:D^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">2</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\:B^1,\:\underline{C^0},\:D^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="128" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$\langle A^4,\:B^1,\:\underline{C^0},\:D^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">3</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\:B^1,\:D^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$\langle A^4,\:B^1,\:D^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">4</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\:B^1,\:\underline{D^1}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$\langle A^4,\:B^1,\:\underline{D^1}\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">5</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\:\underline{B^1},\:D^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\langle A^4,\:\underline{B^1},\:D^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">6</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\:\underline{B^1},\:D^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\langle A^4,\:\underline{B^1},\:D^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">7</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\:D^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$\langle A^4,\:D^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">8</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\:\underline{D^1}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$\langle A^4,\:\underline{D^1}\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">9</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A^4,\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\langle A^4,\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">10</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle \underline{A^4}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$\langle \underline{A^4}\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">11</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle \underline{A^4}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$\langle \underline{A^4}\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">12</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle \rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$\langle \rangle$"></SPAN></TD>
+</TR>
+</TABLE>
+
+<A NAME="table:sequentialprioritybehaviour"></A></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+It is worth to note that if all children are blocked, the
+<TT>SequentialPriorityBehaviour</TT> becomes blocked.
+
+<P>
+Also, if we do not assign priorities and we use the default policy (that is, do
+not skip the blocked sub-behaviours), the <TT>SequentialPriorityBehaviour</TT>
+behaves exactly like the current <TT>SequentialBehaviour</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html52"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html50"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html46"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html53"
+  HREF="node5.html">Credits</A>
+<B> Up:</B> <A NAME="tex2html51"
+  HREF="node2.html">Description</A>
+<B> Previous:</B> <A NAME="tex2html47"
+  HREF="node3.html">Concurrent management of behaviours</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Juan A. Suarez Romero
+2006-10-27
+</ADDRESS>
+</BODY>
+</HTML>

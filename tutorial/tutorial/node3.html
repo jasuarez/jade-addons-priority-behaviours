@@ -1,0 +1,489 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Concurrent management of behaviours with priorities</TITLE>
+<META NAME="description" CONTENT="Concurrent management of behaviours with priorities">
+<META NAME="keywords" CONTENT="tutorial">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tutorial.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html44"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html42"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html36"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html45"
+  HREF="node4.html">Sequential management of behaviours</A>
+<B> Up:</B> <A NAME="tex2html43"
+  HREF="node2.html">Description</A>
+<B> Previous:</B> <A NAME="tex2html37"
+  HREF="node2.html">Description</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00021000000000000000">
+Concurrent management of behaviours with priorities</A>
+</H2>
+This add-on provides a new behaviour named <TT>ParallelPriorityBehaviour</TT>
+that schedules its children in a parallel manner. This behaviour is similar to
+<TT>ParallelBehaviour</TT>, but in this case using priorities to select the
+executing behaviours. So those behaviours with a higher priority are executed
+more
+frequently than other behaviours with a lesser priority.
+
+<P>
+Each child is assigned by the user with a priority equal or greater than
+<TT>0</TT>. The greater the number, the lesser the priority. So a child with
+priority value of <TT>3</TT> has more priority than other behaviour with
+priority value of <TT>5</TT>. The highest priority a behaviour can reach is
+<TT>0</TT>. This priority assigned by the user is called <SPAN  CLASS="textit">static priority</SPAN>,
+and can be changed by the user at any moment.
+
+<P>
+Internally, the <TT>ParallelPriorityBehaviour</TT>'s scheduler uses another
+priority that is called <SPAN  CLASS="textit">dynamic priority</SPAN>. As its name indicates, this
+priority is increased dynamically by the scheduler in order to avoid the
+starvation of a behaviour. So the dynamic behaviour of a child is a number
+between the static priority value of this child and <TT>0</TT>.
+
+<P>
+The idea of the algorithm is that the scheduler executes those children with a
+dynamic priority value of <TT>0</TT>. If there are several behaviours that have
+dynamic priority of <TT>0</TT> then they are executed in the order in which they
+were inserted. Also, if the selected behaviour is blocked then the scheduler
+does not execute it. At last, if there are not children with these dynamic
+priority of <TT>0</TT> then all dynamic priorities are increased.
+
+<P>
+In order to understand better the functioning of the algorithm, we will use an
+example. We will create a <TT>ParallelPriorityBehaviour</TT> with four children
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN>. Each child is assigned with (static) priority of
+<TT>4</TT>, <TT>1</TT>, <TT>0</TT> and <TT>1</TT>, respectively. These children
+are cyclic behaviours that ends when they are executed twice (see listing
+<A HREF="#code:children">1</A>). The <TT>ParallelPriorityBehaviour</TT> ends when all its
+children end (see listing <A HREF="#code:agentparallel">2</A>).
+
+<P>
+<BR>
+<IMG
+ WIDTH="571" HEIGHT="415" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{lstlisting}[caption={Source code for children}, label=code:children]
+impo...
+...ter-;
+}
+\par
+public boolean done() {
+return counter==0;
+}
+}
+\end{lstlisting}">
+<BR>
+
+<P>
+<BR>
+<IMG
+ WIDTH="571" HEIGHT="300" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{lstlisting}[caption={Source code for the agent using
+\texttt{ParallelPrio...
+...), 0);
+ppb.addSubBehaviour(new ChildBehaviour(''D''), 1);
+}
+}
+\end{lstlisting}">
+<BR>
+
+<P>
+Below we show the steps followed by the scheduler. These steps are also
+summarized in table <A HREF="#table:parallelprioritybehaviour">1</A>. In this table the
+superindex of each child is its static priority, while the subindex is its
+dynamic priority.
+
+<P>
+
+<OL>
+<LI>At first the dynamic priority of each child is assigned to the static
+priority value.
+</LI>
+<LI>The scheduler selects those sub-behaviours that have dynamic priority of
+<TT>0</TT>, and executes it. In this case the selected sub-behaviour is <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN>.
+</LI>
+<LI>Again the scheduler selects those sub-behaviours with dynamic priority of
+<TT>0</TT>, that is <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN> once again.
+</LI>
+<LI>Because <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN> has been executed twice, it ends. So the scheduler removes it.
+</LI>
+<LI>The scheduler tries to select the children with dynamic priority of
+<TT>0</TT>. But now there are not such sub-behaviours, so the scheduler
+increases the dynamic priority of all sub-behaviours step by step, until one or
+more of them reaches a value <TT>0</TT> in its dynamic priority.
+</LI>
+<LI>Now that there are several sub-behaviours with dynamic priority of
+<TT>0</TT>, the scheduler executes the child that was inserted first (<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN>).
+</LI>
+<LI>After executing once the child <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN>, its dynamic priority is reset to its
+static priority.
+</LI>
+<LI>Again the scheduler selects the sub-behaviour that has dynamic priority of
+<TT>0</TT>, that is <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN>, and executes it.
+</LI>
+<LI>Once <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN> is executed, its dynamic priority is reset.
+</LI>
+<LI>Again, because there are not children with dynamic priority of <TT>0</TT>,
+all dynamic priorities are increased.
+</LI>
+<LI>The scheduler selects the first inserted behaviour with dynamic priority
+of <TT>0</TT>, and executes it (that is, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$B$"></SPAN> again).
+</LI>
+<LI>Because this sub-behaviour has been executed twice, it ends, and the
+scheduler drops it.
+</LI>
+<LI>The scheduler selects the next child with dynamic priority of <TT>0</TT>,
+that is <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$D$"></SPAN>.
+</LI>
+<LI>Also this sub-behaviour ends because it has been executed twice. Thus the
+scheduler removes it.
+</LI>
+<LI>Because the remaining child does not have a dynamic priority of
+<TT>0</TT>, this priority is increased.
+</LI>
+<LI>Now the scheduler can execute the sub-behaviour <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN>.
+</LI>
+<LI>After this, the dynamic priority value is reset.
+</LI>
+<LI>Once again, the dynamic priority value is increased until it reaches
+<TT>0</TT>.
+</LI>
+<LI>The scheduler executes <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN>.
+</LI>
+<LI>As <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$A$"></SPAN> was executed twice, it is removed, and the
+<TT>ParallelPriorityBehaviour</TT> ends.
+</LI>
+</OL>
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="150"></A>
+<TABLE>
+<CAPTION><STRONG>Table 1:</STRONG>
+Example of scheduling in <TT>ParallelPriorityBehaviour</TT></CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+
+</DIV><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT">STEP</TD>
+<TD ALIGN="LEFT">CHILDREN</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">1</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_4^4,\:B_1^1,\:C_0^0,\:D_1^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="128" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$\langle A_4^4,\:B_1^1,\:C_0^0,\:D_1^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">2</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_4^4,\:B_1^1,\:\underline{C_0^0},\:D_1^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="128" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$\langle A_4^4,\:B_1^1,\:\underline{C_0^0},\:D_1^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">3</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_4^4,\:B_1^1,\:\underline{C_0^0},\:D_1^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="128" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$\langle A_4^4,\:B_1^1,\:\underline{C_0^0},\:D_1^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">4</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_4^4,\:B_1^1,\:D_1^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$\langle A_4^4,\:B_1^1,\:D_1^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">5</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_3^4,\:B_0^1,\:D_0^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$\langle A_3^4,\:B_0^1,\:D_0^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">6</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_3^4,\:\underline{B_0^1},\:D_0^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\langle A_3^4,\:\underline{B_0^1},\:D_0^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">7</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_3^4,\:B_1^1,\:D_0^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$\langle A_3^4,\:B_1^1,\:D_0^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">8</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_3^4,\:B_1^1,\:\underline{D_0^1}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\langle A_3^4,\:B_1^1,\:\underline{D_0^1}\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">9</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_3^4,\:B_1^1,\:D_1^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$\langle A_3^4,\:B_1^1,\:D_1^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">10</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_2^4,\:B_0^1,\:D_0^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$\langle A_2^4,\:B_0^1,\:D_0^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">11</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_2^4,\:\underline{B_0^1},\:D_0^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\langle A_2^4,\:\underline{B_0^1},\:D_0^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">12</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_2^4,\:D_0^1\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\langle A_2^4,\:D_0^1\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">13</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_2^4,\:\underline{D_0^1}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\langle A_2^4,\:\underline{D_0^1}\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">14</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_2^4\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\langle A_2^4\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">15</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_0^4\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$\langle A_0^4\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">16</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle \underline{A_0^4}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\langle \underline{A_0^4}\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">17</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_4^4\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\langle A_4^4\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">18</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle A_0^4\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$\langle A_0^4\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">19</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle \underline{A_0^4}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\langle \underline{A_0^4}\rangle$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">20</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\langle \rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$\langle \rangle$"></SPAN></TD>
+</TR>
+</TABLE>
+
+<A NAME="table:parallelprioritybehaviour"></A></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+It is worth to note that even when the scheduler increases the dynamic priority
+of behaviours, it does not in account whether these behaviours are blocked or
+not. Only when a child is selected to be executed, the scheduler skips it if
+this sub-behaviour is blocked.
+
+<P>
+Also, as in the case of the current <TT>ParallelBehaviour</TT>, if all children
+are blocked then the <TT>ParallelPriorityBehaviour</TT> becomes blocked, until
+one or more children becomes again runnable.
+
+<P>
+An interesting feature is that the new <TT>ParallelPriorityBehaviour</TT> can
+replace the current <TT>ParallelBehaviour</TT>. If the user does not specify any
+priority on children, the <TT>ParallelPriorityBehaviour</TT> behaves exactly
+like the <TT>ParallelBehaviour</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html44"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html42"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html36"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html45"
+  HREF="node4.html">Sequential management of behaviours</A>
+<B> Up:</B> <A NAME="tex2html43"
+  HREF="node2.html">Description</A>
+<B> Previous:</B> <A NAME="tex2html37"
+  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Juan A. Suarez Romero
+2006-10-27
+</ADDRESS>
+</BODY>
+</HTML>
