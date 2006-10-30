@@ -28,6 +28,7 @@
       <include name="add-ons/priorityBehaviours/lib/${libName}.jar" />
       <include name="add-ons/priorityBehaviours/src/**" />
       <include name="add-ons/priorityBehaviours/doc/**" />
+	  <include name="add-ons/priorityBehaviours/tutorial/**" />
     </zip>
   </target>
 <!--Makes Java Doc-->  <target depends="init" name="doc" description="generate javadoc documentation" >
